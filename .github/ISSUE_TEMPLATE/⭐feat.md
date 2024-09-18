@@ -17,5 +17,5 @@ assignees: ''
 - [ ] 구현할 기능
 - [ ] 구현할 기능2
 
-**Reference(Optional) **
+**Reference(Optional)**
 참고 사항이 있다면 작성해주세요

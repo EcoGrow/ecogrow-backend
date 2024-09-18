@@ -17,5 +17,5 @@ assignees: ''
 - [ ] 수정한 내용
 - [ ] 수정한 내용
 
-**Reference(Optional) **
+**Reference(Optional)**
 참고 사항이 있다면 작성해주세요
