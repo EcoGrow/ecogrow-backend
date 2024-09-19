@@ -82,9 +82,7 @@ public class UserService {
         User user = userRepository.findByUsername(requestDto.getUsername())
             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        if (user.isResign()) {
-            throw new CustomException(ErrorCode.RESIGNED_USER);
-        } else if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new CustomException(ErrorCode.INCORRECT_PASSWORD);
         }
 
@@ -112,8 +110,6 @@ public class UserService {
      */
     public void resign(User user) {
         refreshTokenService.removeRefreshToken(user.getId());
-
-        user.resign();
-        userRepository.save(user);
+        userRepository.delete(user);
     }
 }
