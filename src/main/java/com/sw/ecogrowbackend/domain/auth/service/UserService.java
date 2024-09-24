@@ -101,6 +101,7 @@ public class UserService {
      */
     public void resign(User user) {
         refreshTokenService.removeRefreshToken(user.getId());
-        userRepository.delete(user);
+        user.resign();
+        userRepository.save(user);
     }
 }
