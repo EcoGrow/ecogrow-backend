@@ -8,6 +8,7 @@ import lombok.Getter;
 
 @Getter
 public class SignUpResponseDto {
+    Long id;
     String username;
     String name;
     String email;
@@ -17,6 +18,7 @@ public class SignUpResponseDto {
 
     @Builder
     public SignUpResponseDto(User user) {
+        this.id = user.getId();
         this.username = user.getUsername();
         this.name = user.getName();
         this.email = user.getEmail();
