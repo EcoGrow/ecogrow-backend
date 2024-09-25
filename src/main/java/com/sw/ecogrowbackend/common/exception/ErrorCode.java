@@ -36,6 +36,9 @@ public enum ErrorCode {
     NOT_AUTHENTICATED_LOGIN(HttpStatus.FORBIDDEN, "권한에 맞지 않는 로그인입니다."),
     RESIGN_USER(HttpStatus.BAD_REQUEST, "탈퇴한 회원입니다."),
 
+    // Admin
+    NOT_AUTHORIZED_ADMIN(HttpStatus.FORBIDDEN, "관리자 권한이 필요합니다."),
+
     // Role
     ROLE_NOT_FOUND(HttpStatus.NOT_FOUND, "역할을 찾을 수 없습니다."),
 
