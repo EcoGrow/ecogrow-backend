@@ -30,6 +30,4 @@ public class SignUpRequestDto {
     private String email;
 
     private boolean admin = false;
-
-    private String adminToken = "";
 }
