@@ -50,7 +50,7 @@ public class UserService {
         String email = requestDto.getEmail();
         Optional<User> checkEmail = userRepository.findByEmail(email);
         if (checkEmail.isPresent()) {
-            throw new IllegalArgumentException("중복된 Email 입니다.");
+            throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
         }
 
         UserRoleEnum role = UserRoleEnum.USER;
