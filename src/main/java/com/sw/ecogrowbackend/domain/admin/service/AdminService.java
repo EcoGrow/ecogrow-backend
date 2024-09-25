@@ -75,7 +75,6 @@ public class AdminService {
             throw new CustomException(ErrorCode.INCORRECT_PASSWORD);
         }
 
-        // UserRoleEnum.ADMIN으로 비교
         if (!user.getRole().equals(UserRoleEnum.ADMIN)) {
             throw new CustomException(ErrorCode.USER_NOT_AUTHENTICATED);
         }
@@ -90,20 +89,26 @@ public class AdminService {
     /**
      * 관리자가 강제로 유저 삭제 (탈퇴 처리)
      *
-     * @param userId 유저의 Id)
-     * @throws CustomException 관리자,유저가 존재하지 않거나 이미 탈퇴한 경우
+     * @param userId 유저의 ID
+     * @param user 관리자 권한을 가진 사용자 객체
+     * @throws CustomException 관리자 또는 유저가 존재하지 않거나, 유저가 이미 탈퇴한 경우
      */
     @Transactional
-    public void adminDelete(Long userId) {
-        User user = userRepository.findById(userId)
+    public void adminDelete(Long userId, User user) {
+
+        User userToResign = userRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        if (!user.getRole().equals(UserRoleEnum.ADMIN)) {
+            throw new CustomException(ErrorCode.NOT_AUTHORIZED_ADMIN);
+        }
 
         if (user.isResigned()) {
             throw new CustomException(ErrorCode.RESIGN_USER);
         }
 
-        user.resign();
-        userRepository.save(user); // userService 대신 userRepository 사용
+        userToResign.resign();
+        userRepository.save(userToResign);
     }
 
     /**
@@ -122,29 +127,41 @@ public class AdminService {
      * 관리자를 승인
      *
      * @param userId 승인할 관리자의 ID
-     * @throws CustomException 관리자가 존재하지 않는 경우
+     * @param user 관리자 권한을 가진 사용자 객체
+     * @throws CustomException 관리자가 존재하지 않거나 관리자 권한이 없는 경우
      */
     @Transactional
-    public void approveAdmin(Long userId) {
-        User user = userRepository.findById(userId)
+    public void approveAdmin(Long userId, User user) {
+
+        User userToApprove = userRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        user.approveAdmin();
-        userRepository.save(user);
+        if (!user.getRole().equals(UserRoleEnum.ADMIN)) {
+            throw new CustomException(ErrorCode.NOT_AUTHORIZED_ADMIN);
+        }
+
+        userToApprove.approveAdmin();
+        userRepository.save(userToApprove);
     }
 
     /**
      * 관리자 승인을 거부
      *
      * @param userId 거부할 관리자의 ID
-     * @throws CustomException 관리자가 존재하지 않는 경우
+     * @param user 관리자 권한을 가진 사용자 객체
+     * @throws CustomException 관리자가 존재하지 않거나 관리자 권한이 없는 경우
      */
     @Transactional
-    public void rejectAdmin(Long userId) {
-        User user = userRepository.findById(userId)
+    public void rejectAdmin(Long userId, User user) {
+
+        if (!user.getRole().equals(UserRoleEnum.ADMIN)) {
+            throw new CustomException(ErrorCode.NOT_AUTHORIZED_ADMIN);
+        }
+
+        User userToReject = userRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        user.rejectAdmin();
-        userRepository.save(user);
+        userToReject.rejectAdmin();
+        userRepository.save(userToReject);
     }
 }

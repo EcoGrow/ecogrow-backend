@@ -2,13 +2,11 @@ package com.sw.ecogrowbackend.domain.admin.controller;
 
 import com.sw.ecogrowbackend.common.ApiResponse;
 import com.sw.ecogrowbackend.common.ResponseText;
-import com.sw.ecogrowbackend.common.exception.UnauthorizedException;
 import com.sw.ecogrowbackend.domain.admin.dto.AdminRequestDto;
 import com.sw.ecogrowbackend.domain.admin.dto.AdminResponseDto;
 import com.sw.ecogrowbackend.domain.admin.service.AdminService;
 import com.sw.ecogrowbackend.domain.auth.dto.TokenResponseDto;
 import com.sw.ecogrowbackend.domain.auth.dto.UserResponseDto;
-import com.sw.ecogrowbackend.domain.auth.entity.UserRoleEnum;
 import com.sw.ecogrowbackend.security.UserDetailsImpl;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -67,14 +65,10 @@ public class AdminController {
      * @return 회원 탈퇴 성공 응답 데이터
      */
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity<ApiResponse> adminDelete(
-        @PathVariable Long userId,
+    public ResponseEntity<ApiResponse> adminDelete(@PathVariable Long userId,
         @AuthenticationPrincipal UserDetailsImpl userDetails)
     {
-        if (!userDetails.getUser().getRole().equals(UserRoleEnum.ADMIN)) {
-            throw new UnauthorizedException("관리자 권한이 필요합니다.");
-        }
-        adminService.adminDelete(userId);
+        adminService.adminDelete(userId, userDetails.getUser());
         ApiResponse response = ApiResponse.builder()
             .msg(ResponseText.ADMIN_USER_DELETE_SUCCESS.getMsg())
             .statuscode(String.valueOf(HttpStatus.OK.value()))
@@ -89,16 +83,10 @@ public class AdminController {
      * @return 관리자 승인 성공 응답 데이터
      */
     @PostMapping("/approve/{userId}")
-    public ResponseEntity<ApiResponse> approveAdmin(
-        @PathVariable Long userId,
+    public ResponseEntity<ApiResponse> approveAdmin(@PathVariable Long userId,
         @AuthenticationPrincipal UserDetailsImpl userDetails)
     {
-        // 현재 사용자가 관리자인지 확인
-        if (!userDetails.getUser().getRole().equals(UserRoleEnum.ADMIN)) {
-            throw new UnauthorizedException("관리자 권한이 필요합니다.");
-        }
-
-        adminService.approveAdmin(userId);
+        adminService.approveAdmin(userId, userDetails.getUser());
         ApiResponse response = ApiResponse.builder()
             .msg(ResponseText.ADMIN_APPROVE_SUCCESS.getMsg())
             .statuscode(String.valueOf(HttpStatus.OK.value()))
@@ -113,14 +101,10 @@ public class AdminController {
      * @return 관리자 권한 거부 성공 응답 데이터
      */
     @PostMapping("/reject/{userId}")
-    public ResponseEntity<ApiResponse> rejectAdmin(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails)
+    public ResponseEntity<ApiResponse> rejectAdmin(@PathVariable Long userId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails)
     {
-
-        if (!userDetails.getUser().getRole().equals(UserRoleEnum.ADMIN)) {
-            throw new UnauthorizedException("관리자 권한이 필요합니다.");
-        }
-
-        adminService.rejectAdmin(userId);
+        adminService.rejectAdmin(userId, userDetails.getUser());
         ApiResponse response = ApiResponse.builder()
             .msg(ResponseText.ADMIN_REJECT_SUCCESS.getMsg())
             .statuscode(String.valueOf(HttpStatus.OK.value()))
