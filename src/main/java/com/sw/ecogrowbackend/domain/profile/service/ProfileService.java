@@ -76,4 +76,9 @@ public class ProfileService {
             profile.getProfileImageUrl()
         );
     }
+    public void deleteProfile(Long userId) {
+        UserProfile profile = profileRepository.findByUserId(userId)
+            .orElseThrow(() -> new IllegalArgumentException("Profile not found for userId: " + userId));
+        profileRepository.delete(profile);
+    }
 }

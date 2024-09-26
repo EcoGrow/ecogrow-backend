@@ -57,4 +57,21 @@ public class ProfileController {
             .build();
         return ResponseEntity.ok(response);
     }
+    /**
+     * 프로필 삭제 API
+     *
+     * @param userId 사용자 ID
+     * @return 삭제 성공 메시지
+     */
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<ApiResponse> deleteProfile(@PathVariable Long userId) {
+        profileService.deleteProfile(userId);
+        ApiResponse response = ApiResponse.builder()
+            .msg(ResponseText.PROFILE_DELETE_SUCCESS.getMsg())
+            .statuscode(String.valueOf(HttpStatus.OK.value()))
+            .data(null)
+            .build();
+        return ResponseEntity.ok(response);
+    }
+
 }
