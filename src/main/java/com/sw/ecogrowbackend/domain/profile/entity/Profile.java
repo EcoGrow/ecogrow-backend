@@ -4,14 +4,14 @@ import com.sw.ecogrowbackend.domain.auth.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 @Entity
 @Getter
 @NoArgsConstructor
-@Setter
+
 @Table(name = "profiles")
-public class UserProfile {
+public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class UserProfile {
     private String profileImageUrl;
 
 
-    public UserProfile(User user, String bio, String profileImageUrl) {
+    public Profile(User user, String bio, String profileImageUrl) {
         this.user = user;
         this.bio = bio;
         this.profileImageUrl = profileImageUrl;

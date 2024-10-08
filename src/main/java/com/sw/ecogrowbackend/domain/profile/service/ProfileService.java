@@ -1,9 +1,11 @@
 package com.sw.ecogrowbackend.domain.profile.service;
 
+import com.sw.ecogrowbackend.common.exception.ErrorCode;
+import com.sw.ecogrowbackend.common.exception.CustomException;
 import com.sw.ecogrowbackend.domain.auth.entity.User;
 import com.sw.ecogrowbackend.domain.auth.repository.UserRepository;
 import com.sw.ecogrowbackend.domain.profile.dto.ProfileDto;
-import com.sw.ecogrowbackend.domain.profile.entity.UserProfile;
+import com.sw.ecogrowbackend.domain.profile.entity.Profile;
 import com.sw.ecogrowbackend.domain.profile.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +22,10 @@ public class ProfileService {
         this.userRepository = userRepository;
     }
 
-
-    // 조회
+    // 프로필 조회
     public ProfileDto getProfile(Long userId) {
-        UserProfile profile = profileRepository.findByUserId(userId)
-            .orElseThrow(
-                () -> new IllegalArgumentException("Profile not found for userId: " + userId));
+        Profile profile = profileRepository.findByUserId(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         return new ProfileDto(
             profile.getId(),
@@ -39,16 +39,15 @@ public class ProfileService {
     public ProfileDto createProfile(Long userId, ProfileDto profileDto) {
         // 유저 확인
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new IllegalArgumentException("User not found for id: " + userId));
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 이미 프로필이 있는지 확인
         if (profileRepository.findByUserId(userId).isPresent()) {
-            throw new IllegalStateException("Profile already exists for this user.");
+            throw new CustomException(ErrorCode.DUPLICATE_USER);
         }
 
         // 새 프로필 생성
-        UserProfile profile = new UserProfile(user, profileDto.getBio(),
-            profileDto.getProfileImageUrl());
+        Profile profile = new Profile(user, profileDto.getBio(), profileDto.getProfileImageUrl());
         profile = profileRepository.save(profile);
 
         return new ProfileDto(
@@ -63,31 +62,33 @@ public class ProfileService {
     public ProfileDto updateProfile(Long userId, ProfileDto profileDto) {
         // 유저 확인
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new IllegalArgumentException("User not found for id: " + userId));
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 기존 프로필 찾기
-        UserProfile profile = profileRepository.findByUserId(userId)
-            .orElseThrow(
-                () -> new IllegalArgumentException("Profile not found for userId: " + userId));
+        Profile profile = profileRepository.findByUserId(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        // 프로필 업데이트
-        profile.setBio(profileDto.getBio());
-        profile.setProfileImageUrl(profileDto.getProfileImageUrl());
-        profile = profileRepository.save(profile);
+        // 기존 프로필을 새로운 정보로 업데이트된 새로운 프로필 객체로 교체
+        Profile updatedProfile = new Profile(
+            profile.getUser(),
+            profileDto.getBio(),
+            profileDto.getProfileImageUrl()
+        );
+        updatedProfile = profileRepository.save(updatedProfile);
 
         return new ProfileDto(
-            profile.getId(),
-            profile.getUser().getId(),
-            profile.getBio(),
-            profile.getProfileImageUrl()
+            updatedProfile.getId(),
+            updatedProfile.getUser().getId(),
+            updatedProfile.getBio(),
+            updatedProfile.getProfileImageUrl()
         );
     }
 
-    // 프로필 삭제 메소드
+    // 프로필 삭제
     public void deleteProfile(Long userId) {
-        UserProfile profile = profileRepository.findByUserId(userId)
-            .orElseThrow(
-                () -> new IllegalArgumentException("Profile not found for userId: " + userId));
+        Profile profile = profileRepository.findByUserId(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
         profileRepository.delete(profile);
     }
 }
