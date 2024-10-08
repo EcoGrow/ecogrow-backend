@@ -9,6 +9,5 @@ import lombok.Getter;
 public class UserResponseDto {
     private Long id;          // 사용자 ID
     private String username;  // 사용자 이름
-    private String name;      // 실제 이름
     private ApprovalStatus approvalStatus; // 승인 상태
 }

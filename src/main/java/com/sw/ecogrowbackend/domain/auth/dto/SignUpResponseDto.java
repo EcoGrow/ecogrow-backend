@@ -10,7 +10,6 @@ import lombok.Getter;
 public class SignUpResponseDto {
     Long id;
     String username;
-    String name;
     String email;
     UserRoleEnum role;
     LocalDateTime createdAt;
@@ -20,7 +19,6 @@ public class SignUpResponseDto {
     public SignUpResponseDto(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
-        this.name = user.getName();
         this.email = user.getEmail();
         this.role = user.getRole();
         this.createdAt = user.getCreatedAt();
