@@ -56,7 +56,7 @@ public class UserService {
         UserRoleEnum role = UserRoleEnum.USER;
 
         // 사용자 저장
-        User user = new User(username, password, requestDto.getName(), email, role);
+        User user = new User(username, password, email, role);
         userRepository.save(user);
 
         return SignUpResponseDto.builder().user(user).build();
