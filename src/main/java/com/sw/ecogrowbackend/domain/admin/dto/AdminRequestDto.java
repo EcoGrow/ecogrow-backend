@@ -16,11 +16,6 @@ public record AdminRequestDto(
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_])\\S{6,}$", message = "비밀번호는 알파벳 대소문자 + 숫자 + 특수문자로만 구성되어야 합니다.")
     String password,
 
-    @NotBlank(message = "이름은 필수 사항입니다.")
-    @Size(min = 2, max = 20, message = "이름은 최소 2자에서 20자까지 입력 가능합니다.")
-    @Pattern(regexp = "^[a-zA-Z가-힣]+$", message = "한글 혹은 영어 입력만 가능합니다.")
-    String name,
-
     @NotBlank(message = "이메일은 필수 사항입니다.")
     @Size(min = 10, max = 255, message = "이메일은 최소 10글자에서 255글자까지 입력 가능합니다.")
     String email

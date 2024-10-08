@@ -3,6 +3,7 @@ package com.sw.ecogrowbackend.domain.auth.entity;
 import com.sw.ecogrowbackend.common.Timestamped;
 import com.sw.ecogrowbackend.domain.profile.entity.Profile;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,11 +25,12 @@ public class User extends Timestamped {
     @Column(nullable = false, length = 250)
     private String password;
 
-    @Column(nullable = false, length = 20)
-    private String name;
-
     @Column(nullable = false, unique = true)
     private String email;
+
+    private Long kakaoId;
+
+    private Long googleId;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -48,12 +50,25 @@ public class User extends Timestamped {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Profile profile;
 
-    public User(String username, String password, String name, String email, UserRoleEnum role) {
+    // 기본 생성자
+    public User(String username, String password, String email, UserRoleEnum role) {
         this.username = username;
         this.password = password;
-        this.name = name;
         this.email = email;
         this.role = role;
+        this.approvalStatus = ApprovalStatus.PENDING;
+        this.resignedAt = null;
+    }
+
+    // 카카오 로그인 사용자 생성자
+    public User(String username, String password, String email, UserRoleEnum role, Long kakaoId,
+        Long googleId) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.kakaoId = kakaoId;
+        this.googleId = googleId;
         this.approvalStatus = ApprovalStatus.PENDING;
         this.resignedAt = null;
     }
@@ -82,5 +97,17 @@ public class User extends Timestamped {
     // 프로필 설정 메서드
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    // 카카오 ID 업데이트 메서드
+    public User kakaoIdUpdate(Long kakaoId) {
+        this.kakaoId = kakaoId;
+        return this; // 메서드 체이닝을 위해 this 반환
+    }
+
+    // 구글 ID 업데이트 메서드
+    public User googleIdUpdate(Long googleId) {
+        this.googleId = googleId;
+        return this; // 메서드 체이닝을 위해 this 반환
     }
 }

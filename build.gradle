@@ -19,6 +19,10 @@ configurations {
     }
 }
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-parameters'
+}
+
 repositories {
     mavenCentral()
 }
@@ -50,6 +54,10 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    compileOnly("org.springframework.boot:spring-boot-devtools")
+
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 tasks.named('test') {

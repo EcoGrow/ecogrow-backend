@@ -21,7 +21,6 @@ public interface AdminMapper {
     @Mappings({
         @Mapping(source = "id", target = "id"),
         @Mapping(source = "username", target = "username"),
-        @Mapping(source = "name", target = "name"),
         @Mapping(source = "email", target = "email")
     })
     AdminResponseDto toAdminResponseDto(User user);

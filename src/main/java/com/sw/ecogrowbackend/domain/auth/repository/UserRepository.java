@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
+    Optional<User> findByKakaoId(Long kakaoId);
+    Optional<User> findByGoogleId(Long googleId);
     List<User> findByApprovalStatus(ApprovalStatus approvalStatus);
     // 탈퇴한 후 일정 기간(30일) 이상 지난 사용자 목록을 조회
     List<User> findAllByResignedAtBefore(LocalDateTime dateTime);

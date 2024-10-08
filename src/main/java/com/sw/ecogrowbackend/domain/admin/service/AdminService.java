@@ -49,7 +49,7 @@ public class AdminService {
 
         String encodedPassword = passwordEncoder.encode(adminRequestDto.password());
         UserRoleEnum role = UserRoleEnum.ADMIN;
-        User user = new User(adminRequestDto.username(), encodedPassword, adminRequestDto.name(),
+        User user = new User(adminRequestDto.username(), encodedPassword,
             adminRequestDto.email(), role);
 
         userRepository.save(user);
@@ -119,7 +119,7 @@ public class AdminService {
     public List<UserResponseDto> getPendingApprovalUsers() {
         List<User> pendingUsers = userRepository.findByApprovalStatus(ApprovalStatus.PENDING);
         return pendingUsers.stream()
-            .map(user -> new UserResponseDto(user.getId(), user.getUsername(), user.getName(), user.getApprovalStatus()))
+            .map(user -> new UserResponseDto(user.getId(), user.getUsername(), user.getApprovalStatus()))
             .collect(Collectors.toList());
     }
 

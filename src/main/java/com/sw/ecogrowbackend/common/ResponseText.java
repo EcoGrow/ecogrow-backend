@@ -19,12 +19,15 @@ public enum ResponseText {
     AUTH_LOGOUT_SUCCESS("로그아웃 성공"),
     AUTH_RESIGN_SUCCESS("회원탈퇴 성공"),
     AUTH_TOKEN_REISSUE_SUCCESS("토큰 재발급 성공"),
+    KAKAO_LOGIN_SUCCESS( "카카오 로그인 성공"),
+    GOOGLE_LOGIN_SUCCESS( "구글 로그인 성공"),
 
     // profile
     PROFILE_CREATE_SUCCESS("프로필 생성 성공"),
     PROFILE_UPDATE_SUCCESS("프로필 업데이트 성공"),
     PROFILE_DELETE_SUCCESS("프로필 삭제 성공"),
     PROFILE_FETCH_SUCCESS("프로필 조회 성공");
+
     private String msg;
 
     ResponseText(String msg) {
