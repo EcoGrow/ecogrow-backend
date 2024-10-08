@@ -23,7 +23,8 @@ public enum ResponseText {
     // profile
     PROFILE_CREATE_SUCCESS("프로필 생성 성공"),
     PROFILE_UPDATE_SUCCESS("프로필 업데이트 성공"),
-    PROFILE_DELETE_SUCCESS("프로필 삭제 성공");
+    PROFILE_DELETE_SUCCESS("프로필 삭제 성공"),
+    PROFILE_FETCH_SUCCESS("프로필 조회 성공");
     private String msg;
 
     ResponseText(String msg) {

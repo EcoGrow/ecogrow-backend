@@ -30,7 +30,8 @@ public class ProfileController {
      * @return 프로필 생성 응답 데이터
      */
     @PostMapping("/{userId}")
-    public ResponseEntity<ApiResponse> createProfile(@PathVariable Long userId, @Valid @RequestBody ProfileDto profileDto) {
+    public ResponseEntity<ApiResponse> createProfile(@PathVariable Long userId,
+        @Valid @RequestBody ProfileDto profileDto) {
         ProfileDto createdProfile = profileService.createProfile(userId, profileDto);
         ApiResponse response = ApiResponse.builder()
             .msg(ResponseText.PROFILE_CREATE_SUCCESS.getMsg())
@@ -41,14 +42,32 @@ public class ProfileController {
     }
 
     /**
-     * 프로필 업데이트 API
+     * 프로필 조회 API
+     *
+     * @param userId 사용자 ID
+     * @return 프로필 조회 응답 데이터
+     */
+    @GetMapping("/{userId}")
+    public ResponseEntity<ApiResponse> getProfile(@PathVariable Long userId) {
+        ProfileDto profile = profileService.getProfile(userId);
+        ApiResponse response = ApiResponse.builder()
+            .msg(ResponseText.PROFILE_FETCH_SUCCESS.getMsg())  // 성공 메시지
+            .statuscode(String.valueOf(HttpStatus.OK.value()))
+            .data(profile)
+            .build();
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 프로필 수정 API
      *
      * @param userId     사용자 ID
      * @param profileDto 프로필 업데이트 요청 데이터
      * @return 프로필 업데이트 응답 데이터
      */
     @PutMapping("/{userId}")
-    public ResponseEntity<ApiResponse> updateProfile(@PathVariable Long userId, @Valid @RequestBody ProfileDto profileDto) {
+    public ResponseEntity<ApiResponse> updateProfile(@PathVariable Long userId,
+        @Valid @RequestBody ProfileDto profileDto) {
         ProfileDto updatedProfile = profileService.updateProfile(userId, profileDto);
         ApiResponse response = ApiResponse.builder()
             .msg(ResponseText.PROFILE_UPDATE_SUCCESS.getMsg())
@@ -57,6 +76,7 @@ public class ProfileController {
             .build();
         return ResponseEntity.ok(response);
     }
+
     /**
      * 프로필 삭제 API
      *
