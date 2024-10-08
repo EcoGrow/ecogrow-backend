@@ -1,14 +1,12 @@
 package com.sw.ecogrowbackend.domain.auth.entity;
 
 import com.sw.ecogrowbackend.common.Timestamped;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.sw.ecogrowbackend.domain.profile.entity.Profile;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -46,6 +44,10 @@ public class User extends Timestamped {
     @Column(nullable = true)
     private LocalDateTime resignedAt;
 
+    // 양방향 연관관계 설정
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Profile profile;
+
     public User(String username, String password, String name, String email, UserRoleEnum role) {
         this.username = username;
         this.password = password;
@@ -75,5 +77,10 @@ public class User extends Timestamped {
     // 탈퇴 여부 확인
     public boolean isResigned() {
         return this.resignedAt != null;
+    }
+
+    // 프로필 설정 메서드
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 }
