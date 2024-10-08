@@ -1,10 +1,13 @@
 package com.sw.ecogrowbackend.domain.auth.entity;
 
 import com.sw.ecogrowbackend.common.Timestamped;
+import com.sw.ecogrowbackend.domain.profile.entity.Profile;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -33,14 +36,19 @@ public class User extends Timestamped {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
-    // 관리자 승인 상태 필드
+    // 추가: 관리자 승인 상태 필드
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
 
+    // 탈퇴 상태 확인 메서드
     // 탈퇴 여부 및 탈퇴 시점 저장
     @Column(nullable = true)
     private LocalDateTime resignedAt;
+
+    // 양방향 연관관계 설정
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Profile profile;
 
     // 기본 생성자
     public User(String username, String password, String email, UserRoleEnum role) {
@@ -84,6 +92,11 @@ public class User extends Timestamped {
     // 탈퇴 여부 확인
     public boolean isResigned() {
         return this.resignedAt != null;
+    }
+
+    // 프로필 설정 메서드
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     // 카카오 ID 업데이트 메서드
