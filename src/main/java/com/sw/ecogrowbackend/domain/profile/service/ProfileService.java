@@ -20,6 +20,8 @@ public class ProfileService {
         this.userRepository = userRepository;
     }
 
+
+    // 조회
     public ProfileDto getProfile(Long userId) {
         UserProfile profile = profileRepository.findByUserId(userId)
             .orElseThrow(
@@ -33,6 +35,7 @@ public class ProfileService {
         );
     }
 
+    // 프로필 생성
     public ProfileDto createProfile(Long userId, ProfileDto profileDto) {
         // 유저 확인
         User user = userRepository.findById(userId)
@@ -44,7 +47,8 @@ public class ProfileService {
         }
 
         // 새 프로필 생성
-        UserProfile profile = new UserProfile(user, profileDto.getBio(), profileDto.getProfileImageUrl());
+        UserProfile profile = new UserProfile(user, profileDto.getBio(),
+            profileDto.getProfileImageUrl());
         profile = profileRepository.save(profile);
 
         return new ProfileDto(
@@ -55,6 +59,7 @@ public class ProfileService {
         );
     }
 
+    // 프로필 수정
     public ProfileDto updateProfile(Long userId, ProfileDto profileDto) {
         // 유저 확인
         User user = userRepository.findById(userId)
@@ -62,7 +67,8 @@ public class ProfileService {
 
         // 기존 프로필 찾기
         UserProfile profile = profileRepository.findByUserId(userId)
-            .orElseThrow(() -> new IllegalArgumentException("Profile not found for userId: " + userId));
+            .orElseThrow(
+                () -> new IllegalArgumentException("Profile not found for userId: " + userId));
 
         // 프로필 업데이트
         profile.setBio(profileDto.getBio());
@@ -76,9 +82,12 @@ public class ProfileService {
             profile.getProfileImageUrl()
         );
     }
+
+    // 프로필 삭제 메소드
     public void deleteProfile(Long userId) {
         UserProfile profile = profileRepository.findByUserId(userId)
-            .orElseThrow(() -> new IllegalArgumentException("Profile not found for userId: " + userId));
+            .orElseThrow(
+                () -> new IllegalArgumentException("Profile not found for userId: " + userId));
         profileRepository.delete(profile);
     }
 }
