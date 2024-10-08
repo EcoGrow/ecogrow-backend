@@ -18,7 +18,9 @@ public enum ResponseText {
     AUTH_LOGIN_SUCCESS("로그인 성공"),
     AUTH_LOGOUT_SUCCESS("로그아웃 성공"),
     AUTH_RESIGN_SUCCESS("회원탈퇴 성공"),
-    AUTH_TOKEN_REISSUE_SUCCESS("토큰 재발급 성공");
+    AUTH_TOKEN_REISSUE_SUCCESS("토큰 재발급 성공"),
+    KAKAO_LOGIN_SUCCESS( "카카오 로그인 성공"),
+    GOOGLE_LOGIN_SUCCESS( "구글 로그인 성공");
 
     private String msg;
 

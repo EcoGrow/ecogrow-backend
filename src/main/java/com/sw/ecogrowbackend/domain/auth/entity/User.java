@@ -1,10 +1,6 @@
 package com.sw.ecogrowbackend.domain.auth.entity;
 
 import com.sw.ecogrowbackend.common.Timestamped;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -26,32 +22,45 @@ public class User extends Timestamped {
     @Column(nullable = false, length = 250)
     private String password;
 
-    @Column(nullable = false, length = 20)
-    private String name;
-
     @Column(nullable = false, unique = true)
     private String email;
+
+    private Long kakaoId;
+
+    private Long googleId;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
-    // 추가: 관리자 승인 상태 필드
+    // 관리자 승인 상태 필드
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
 
-    // 탈퇴 상태 확인 메서드
     // 탈퇴 여부 및 탈퇴 시점 저장
     @Column(nullable = true)
     private LocalDateTime resignedAt;
 
-    public User(String username, String password, String name, String email, UserRoleEnum role) {
+    // 기본 생성자
+    public User(String username, String password, String email, UserRoleEnum role) {
         this.username = username;
         this.password = password;
-        this.name = name;
         this.email = email;
         this.role = role;
+        this.approvalStatus = ApprovalStatus.PENDING;
+        this.resignedAt = null;
+    }
+
+    // 카카오 로그인 사용자 생성자
+    public User(String username, String password, String email, UserRoleEnum role, Long kakaoId,
+        Long googleId) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.kakaoId = kakaoId;
+        this.googleId = googleId;
         this.approvalStatus = ApprovalStatus.PENDING;
         this.resignedAt = null;
     }
@@ -75,5 +84,17 @@ public class User extends Timestamped {
     // 탈퇴 여부 확인
     public boolean isResigned() {
         return this.resignedAt != null;
+    }
+
+    // 카카오 ID 업데이트 메서드
+    public User kakaoIdUpdate(Long kakaoId) {
+        this.kakaoId = kakaoId;
+        return this; // 메서드 체이닝을 위해 this 반환
+    }
+
+    // 구글 ID 업데이트 메서드
+    public User googleIdUpdate(Long googleId) {
+        this.googleId = googleId;
+        return this; // 메서드 체이닝을 위해 this 반환
     }
 }
