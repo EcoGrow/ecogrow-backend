@@ -42,6 +42,9 @@ public enum ErrorCode {
     // Role
     ROLE_NOT_FOUND(HttpStatus.NOT_FOUND, "역할을 찾을 수 없습니다."),
 
+    // Waste Record
+    WASTE_RECORD_NOT_FOUND(HttpStatus.NOT_FOUND, "쓰레기 기록을 찾을 수 없거나 접근 권한이 없습니다."),
+
     // 추가된 에러 코드
     DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "중복된 Email 입니다."),
     INVALID_ADMIN_TOKEN(HttpStatus.BAD_REQUEST, "관리자 암호가 틀려 등록이 불가능합니다.");
