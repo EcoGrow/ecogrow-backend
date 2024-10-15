@@ -1,4 +1,4 @@
-package com.sw.ecogrowbackend.chat;
+package com.sw.ecogrowbackend.websoket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
