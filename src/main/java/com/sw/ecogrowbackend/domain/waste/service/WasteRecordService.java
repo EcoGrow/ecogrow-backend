@@ -21,16 +21,22 @@ public class WasteRecordService {
     private final WasteRecordRepository wasteRecordRepository;
 
     @Autowired
-    public WasteRecordService(UserRepository userRepository, WasteRecordRepository wasteRecordRepository) {
+    public WasteRecordService(UserRepository userRepository,
+        WasteRecordRepository wasteRecordRepository) {
         this.userRepository = userRepository;
         this.wasteRecordRepository = wasteRecordRepository;
     }
 
     // 쓰레기 기록 저장 메서드
     public WasteRecord saveWasteRecord(User user, WasteRecordRequestDto requestDto) {
+        double standardizedAmount = convertToKilograms(requestDto.getAmount(),
+            requestDto.getUnit());
+
+        String standardizedUnit = "kg";
         WasteRecord wasteRecord = new WasteRecord(
             requestDto.getWasteType(),
-            requestDto.getAmount(),
+            standardizedAmount,
+            standardizedUnit,
             user
         );
         return wasteRecordRepository.save(wasteRecord);
@@ -56,8 +62,10 @@ public class WasteRecordService {
         WasteRecord wasteRecord = wasteRecordRepository.findByIdAndUser(recordId, user)
             .orElseThrow(() -> new CustomException(ErrorCode.WASTE_RECORD_NOT_FOUND));
 
+        double standardizedAmount = convertToKilograms(requestDto.getAmount(),
+            requestDto.getUnit());
         wasteRecord.setWasteType(requestDto.getWasteType());
-        wasteRecord.setAmount(requestDto.getAmount());
+        wasteRecord.setAmount(standardizedAmount);
 
         return wasteRecordRepository.save(wasteRecord);
     }
@@ -68,5 +76,15 @@ public class WasteRecordService {
             .orElseThrow(() -> new CustomException(ErrorCode.WASTE_RECORD_NOT_FOUND));
 
         wasteRecordRepository.delete(wasteRecord);
+    }
+
+    private double convertToKilograms(double amount, String unit) {
+        if (unit.equalsIgnoreCase("g")) {
+            return amount / 1000.0;  // 그램을 킬로그램으로 변환
+        } else if (unit.equalsIgnoreCase("kg")) {
+            return amount;
+        } else {
+            throw new CustomException(ErrorCode.INVALID_UNIT);
+        }
     }
 }
