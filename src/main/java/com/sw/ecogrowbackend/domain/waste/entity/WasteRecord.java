@@ -26,15 +26,20 @@ public class WasteRecord extends Timestamped {
     @Column(nullable = false)
     private double amount; // 쓰레기 양 (예: kg 단위)
 
+    @Setter
+    @Column(nullable = false)
+    private String unit; // 단위
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private User user;
 
     // 기본 생성자
-    public WasteRecord(String wasteType, double amount, User user) {
+    public WasteRecord(String wasteType, double amount, String unit, User user) {
         this.wasteType = wasteType;
         this.amount = amount;
+        this.unit = unit;
         this.user = user;
     }
 
