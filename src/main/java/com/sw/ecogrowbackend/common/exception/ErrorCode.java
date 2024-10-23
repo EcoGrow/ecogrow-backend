@@ -44,6 +44,7 @@ public enum ErrorCode {
 
     // Waste Record
     WASTE_RECORD_NOT_FOUND(HttpStatus.NOT_FOUND, "쓰레기 기록을 찾을 수 없거나 접근 권한이 없습니다."),
+    INVALID_UNIT(HttpStatus.BAD_REQUEST, "유효하지 않은 단위입니다. 'kg' 또는 'g' 단위를 사용하세요."),
 
     // 추가된 에러 코드
     DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "중복된 Email 입니다."),
