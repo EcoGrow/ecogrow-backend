@@ -11,6 +11,8 @@ import com.sw.ecogrowbackend.domain.waste.repository.WasteRecordRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +42,14 @@ public class WasteRecordService {
             user
         );
         return wasteRecordRepository.save(wasteRecord);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<WasteRecordResponseDto> getAllWasteRecords(Pageable pageable) {
+
+        Page<WasteRecord> wasteRecords = wasteRecordRepository.findAllByOrderByCreatedAtDesc(
+            pageable);
+        return wasteRecords.map(WasteRecordResponseDto::new);
     }
 
     // 사용자별 쓰레기 기록 조회 메서드
