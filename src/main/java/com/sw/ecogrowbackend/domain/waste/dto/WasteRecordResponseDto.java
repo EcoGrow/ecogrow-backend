@@ -12,11 +12,11 @@ public class WasteRecordResponseDto {
     private String wasteType;
     private double amount;
 
-    public WasteRecordResponseDto(Long id, String wasteType, double amount
-    ) {
-        this.id = id;
-        this.wasteType = wasteType;
-        this.amount = amount;
+    // WasteRecord를 인수로 받아 처리하는 생성자
+    public WasteRecordResponseDto(WasteRecord wasteRecord) {
+        this.id = wasteRecord.getId();
+        this.wasteType = wasteRecord.getWasteType();
+        this.amount = wasteRecord.getAmount();
     }
 
     // 엔티티를 Dto로 변환하는 메서드
