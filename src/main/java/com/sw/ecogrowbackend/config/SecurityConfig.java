@@ -72,7 +72,6 @@ public class SecurityConfig {
                 .permitAll() // 리소스(static resources) 접근을 허용
                 .requestMatchers("/api/user/signup").permitAll()
                 .requestMatchers("/api/user/login").permitAll()
-                .requestMatchers("/api/admin/**").permitAll()
                 .requestMatchers("/**").permitAll()
                 .anyRequest().authenticated() // 그 외의 모든 요청은 인증 필요
         );
