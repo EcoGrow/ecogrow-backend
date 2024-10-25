@@ -141,7 +141,7 @@ public class UserController {
         ApiResponse apiResponse = ApiResponse.builder()
             .msg(ResponseText.KAKAO_LOGIN_SUCCESS.getMsg())
             .statuscode(String.valueOf(HttpStatus.OK.value()))
-            .data(null)
+            .data(token)
             .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
@@ -167,7 +167,7 @@ public class UserController {
         ApiResponse apiResponse = ApiResponse.builder()
             .msg(ResponseText.GOOGLE_LOGIN_SUCCESS.getMsg())
             .statuscode(String.valueOf(HttpStatus.OK.value()))
-            .data(null)
+            .data(token)
             .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
