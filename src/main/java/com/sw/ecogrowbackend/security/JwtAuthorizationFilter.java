@@ -9,6 +9,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -74,6 +76,27 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         res.setStatus(statusCode);
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
-        res.getWriter().write(new ObjectMapper().writeValueAsString(message));
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(new ErrorResponse(message));
+        res.getWriter().write(json);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.equals("/api/user/signup") || path.equals("/api/user/login") ||
+            path.equals("/api/user/kakao/callback") || path.equals("/api/user/google/callback");
+    }
+
+    @Getter
+    private static class ErrorResponse {
+
+        private final String error;
+
+        public ErrorResponse(String error) {
+            this.error = error;
+        }
+
     }
 }
