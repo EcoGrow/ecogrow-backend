@@ -4,8 +4,10 @@ import com.sw.ecogrowbackend.common.exception.CustomException;
 import com.sw.ecogrowbackend.common.exception.ErrorCode;
 import com.sw.ecogrowbackend.domain.auth.entity.User;
 import com.sw.ecogrowbackend.domain.auth.repository.UserRepository;
+import com.sw.ecogrowbackend.domain.waste.dto.WasteItemRequestDto;
 import com.sw.ecogrowbackend.domain.waste.dto.WasteRecordRequestDto;
 import com.sw.ecogrowbackend.domain.waste.dto.WasteRecordResponseDto;
+import com.sw.ecogrowbackend.domain.waste.entity.WasteItem;
 import com.sw.ecogrowbackend.domain.waste.entity.WasteRecord;
 import com.sw.ecogrowbackend.domain.waste.repository.WasteRecordRepository;
 import java.util.List;
@@ -31,16 +33,17 @@ public class WasteRecordService {
 
     // 쓰레기 기록 저장 메서드
     public WasteRecord saveWasteRecord(User user, WasteRecordRequestDto requestDto) {
-        double standardizedAmount = convertToKilograms(requestDto.getAmount(),
-            requestDto.getUnit());
+        WasteRecord wasteRecord = new WasteRecord(user);
 
-        String standardizedUnit = "kg";
-        WasteRecord wasteRecord = new WasteRecord(
-            requestDto.getWasteType(),
-            standardizedAmount,
-            standardizedUnit,
-            user
-        );
+        for (WasteItemRequestDto itemDto : requestDto.getWasteItems()) {
+            double standardizedAmount = convertToKilograms(itemDto.getAmount(), itemDto.getUnit());
+            WasteItem wasteItem = new WasteItem();
+            wasteItem.setWasteType(itemDto.getWasteType());
+            wasteItem.setAmount(standardizedAmount);
+            wasteItem.setUnit("kg");
+
+            wasteRecord.addWasteItem(wasteItem);
+        }
         return wasteRecordRepository.save(wasteRecord);
     }
 
@@ -72,11 +75,17 @@ public class WasteRecordService {
         WasteRecord wasteRecord = wasteRecordRepository.findByIdAndUser(recordId, user)
             .orElseThrow(() -> new CustomException(ErrorCode.WASTE_RECORD_NOT_FOUND));
 
-        double standardizedAmount = convertToKilograms(requestDto.getAmount(),
-            requestDto.getUnit());
-        wasteRecord.setWasteType(requestDto.getWasteType());
-        wasteRecord.setAmount(standardizedAmount);
+        wasteRecord.getWasteItems().clear();
 
+        for (WasteItemRequestDto itemDto : requestDto.getWasteItems()) {
+            double standardizedAmount = convertToKilograms(itemDto.getAmount(), itemDto.getUnit());
+            WasteItem wasteItem = new WasteItem();
+            wasteItem.setWasteType(itemDto.getWasteType());
+            wasteItem.setAmount(standardizedAmount);
+            wasteItem.setUnit("kg");
+
+            wasteRecord.addWasteItem(wasteItem); // Associate updated items with the record
+        }
         return wasteRecordRepository.save(wasteRecord);
     }
 
