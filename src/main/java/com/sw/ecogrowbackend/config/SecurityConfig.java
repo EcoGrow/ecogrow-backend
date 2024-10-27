@@ -68,12 +68,10 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorizeHttpRequests ->
             authorizeHttpRequests
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .permitAll() // 리소스(static resources) 접근을 허용
-                .requestMatchers("/api/user/signup").permitAll()
-                .requestMatchers("/api/user/login").permitAll()
-                .requestMatchers("/**").permitAll()
-                .anyRequest().authenticated() // 그 외의 모든 요청은 인증 필요
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .requestMatchers("/api/user/signup", "/api/user/login", "/api/user/kakao/callback", "/api/user/google/callback").permitAll()
+                .requestMatchers("/api/user/logout").authenticated()
+                .anyRequest().authenticated() // 그 외 요청은 인증 필요
         );
 
         // accessDeniedHandler 를 사용할 때, 새로 만든 빈 메서드를 호출하도록 변경
