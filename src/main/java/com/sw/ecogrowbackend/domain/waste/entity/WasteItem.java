@@ -34,6 +34,9 @@ public class WasteItem {
     private String unit; // 단위
 
     @Setter
+    private boolean isRecyclable; // 재활용 가능 여부
+
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "waste_record_id")
     private WasteRecord wasteRecord;
