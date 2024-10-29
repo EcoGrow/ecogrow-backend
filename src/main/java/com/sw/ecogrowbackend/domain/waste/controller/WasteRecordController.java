@@ -10,7 +10,6 @@ import com.sw.ecogrowbackend.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +53,7 @@ public class WasteRecordController {
     public ResponseEntity<ApiResponse> getAllWasteRecords(
         Pageable pageable) {
         // 인증된 사용자의 ID를 이용하여 기록 조회
-        Page<WasteRecordResponseDto> records = wasteRecordService.getAllWasteRecords(pageable);
+        List<WasteRecordResponseDto> records = wasteRecordService.getAllWasteRecords(pageable).getContent();
         ApiResponse response = ApiResponse.builder()
             .msg(ResponseText.WASTE_RECORD_FETCH_SUCCESS.getMsg())
             .statuscode(String.valueOf(HttpStatus.OK.value()))
