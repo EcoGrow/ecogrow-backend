@@ -49,6 +49,15 @@ public class WasteRecordService {
         return wasteRecordRepository.save(wasteRecord);
     }
 
+    // 쓰레기 기록 단건 조회
+    @Transactional(readOnly = true)
+    public WasteRecordResponseDto getWasteRecord(Long recordId) {
+        WasteRecord wasteRecord = wasteRecordRepository.findById(recordId)
+            .orElseThrow(() -> new CustomException(ErrorCode.WASTE_RECORD_NOT_FOUND));
+        return new WasteRecordResponseDto(wasteRecord);
+    }
+
+    // 쓰레기 기록 전체 조회
     @Transactional(readOnly = true)
     public Page<WasteRecordResponseDto> getAllWasteRecords(Pageable pageable) {
 

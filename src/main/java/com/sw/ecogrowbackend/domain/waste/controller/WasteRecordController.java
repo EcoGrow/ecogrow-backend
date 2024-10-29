@@ -45,7 +45,23 @@ public class WasteRecordController {
     }
 
     /**
-     * 사용자별 쓰레기 기록 전체 조회 API
+     * 쓰레기 기록 단건 조회 API
+     * @param recordId 기록 ID
+     * @return 쓰레기 기록 목록 응답 데이터
+     */
+    @GetMapping("/{recordId}")
+    public ResponseEntity<ApiResponse> getWasteRecord(@PathVariable Long recordId) {
+        WasteRecordResponseDto record = wasteRecordService.getWasteRecord(recordId);
+        ApiResponse response = ApiResponse.builder()
+            .msg(ResponseText.WASTE_RECORD_FETCH_SUCCESS.getMsg())
+            .statuscode(String.valueOf(HttpStatus.OK.value()))
+            .data(record)
+            .build();
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 쓰레기 기록 전체 조회 API
      * @param pageable 페이지 정보
      * @return 쓰레기 기록 목록 응답 데이터
      */
@@ -65,9 +81,10 @@ public class WasteRecordController {
     /**
      * 사용자별 쓰레기 기록 조회 API
      *
+     * @param userId 사용자 아이디
      * @return 쓰레기 기록 목록 응답 데이터
      */
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<ApiResponse> getWasteRecords(
         @PathVariable Long userId) {
         // 인증된 사용자의 ID를 이용하여 기록 조회
