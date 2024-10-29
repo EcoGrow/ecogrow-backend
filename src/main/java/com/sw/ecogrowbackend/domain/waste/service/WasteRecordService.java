@@ -9,6 +9,7 @@ import com.sw.ecogrowbackend.domain.waste.dto.WasteRecordRequestDto;
 import com.sw.ecogrowbackend.domain.waste.dto.WasteRecordResponseDto;
 import com.sw.ecogrowbackend.domain.waste.entity.WasteItem;
 import com.sw.ecogrowbackend.domain.waste.entity.WasteRecord;
+import com.sw.ecogrowbackend.domain.waste.entity.WasteTypeUtils;
 import com.sw.ecogrowbackend.domain.waste.repository.WasteRecordRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +42,7 @@ public class WasteRecordService {
             wasteItem.setWasteType(itemDto.getWasteType());
             wasteItem.setAmount(standardizedAmount);
             wasteItem.setUnit("kg");
+            wasteItem.setRecyclable(WasteTypeUtils.isRecyclable(itemDto.getWasteType()));
 
             wasteRecord.addWasteItem(wasteItem);
         }
