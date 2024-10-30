@@ -1,17 +1,16 @@
 package com.sw.ecogrowbackend.domain.profile.entity;
 
+import com.sw.ecogrowbackend.common.Timestamped;
 import com.sw.ecogrowbackend.domain.auth.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @Getter
 @NoArgsConstructor
-
 @Table(name = "profiles")
-public class Profile {
+public class Profile extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

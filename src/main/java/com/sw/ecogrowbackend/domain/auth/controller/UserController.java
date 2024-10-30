@@ -40,8 +40,7 @@ public class UserController {
      * @return 회원가입 응답 데이터
      */
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse> signup(@Valid @RequestBody SignUpRequestDto requestDto)
-    {
+    public ResponseEntity<ApiResponse> signup(@Valid @RequestBody SignUpRequestDto requestDto) {
         SignUpResponseDto responseDto = userService.signup(requestDto);
         ApiResponse response = ApiResponse.builder()
             .msg(ResponseText.AUTH_SIGNUP_SUCCESS.getMsg())
@@ -58,8 +57,7 @@ public class UserController {
      * @return 발급된 토큰 응답 데이터
      */
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequestDto requestDto)
-    {
+    public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequestDto requestDto) {
         TokenResponseDto responseDto = userService.login(requestDto);
         ApiResponse response = ApiResponse.builder()
             .msg(ResponseText.AUTH_LOGIN_SUCCESS.getMsg())
@@ -76,8 +74,8 @@ public class UserController {
      * @return 로그아웃 성공 응답
      */
     @PostMapping("/logout")
-    public ResponseEntity<ApiResponse> logout(@AuthenticationPrincipal UserDetailsImpl userDetails)
-    {
+    public ResponseEntity<ApiResponse> logout(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
         userService.logout(userDetails.getUser());
         ApiResponse response = ApiResponse.builder()
             .msg(ResponseText.AUTH_LOGOUT_SUCCESS.getMsg())
@@ -93,8 +91,8 @@ public class UserController {
      * @return 회원탈퇴 성공 응답
      */
     @PostMapping("/resign")
-    public ResponseEntity<ApiResponse> withdraw(@AuthenticationPrincipal UserDetailsImpl userDetails)
-    {
+    public ResponseEntity<ApiResponse> withdraw(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
         userService.resign(userDetails.getUser());
         ApiResponse response = ApiResponse.builder()
             .msg(ResponseText.AUTH_RESIGN_SUCCESS.getMsg())
@@ -110,8 +108,7 @@ public class UserController {
      * @return 재발급된 토큰 응답 데이터
      */
     @PostMapping("/token/reissue")
-    public ResponseEntity<ApiResponse> refreshToken(HttpServletRequest request)
-    {
+    public ResponseEntity<ApiResponse> refreshToken(HttpServletRequest request) {
         TokenResponseDto responseDto = refreshTokenService.reissueToken(request);
         ApiResponse response = ApiResponse.builder()
             .msg(ResponseText.AUTH_TOKEN_REISSUE_SUCCESS.getMsg())
@@ -124,13 +121,14 @@ public class UserController {
     /**
      * 카카오 로그인 API
      *
-     * @param code 카카오 서버로부터 전달받은 인가 코드
+     * @param code     카카오 서버로부터 전달받은 인가 코드
      * @param response HTTP 응답 객체 (쿠키를 추가하기 위해 사용)
      * @return 리다이렉트 URL
      * @throws JsonProcessingException JSON 파싱 중 발생할 수 있는 예외
      */
     @GetMapping("/kakao/callback")
-    public ResponseEntity<ApiResponse> kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+    public ResponseEntity<ApiResponse> kakaoLogin(@RequestParam String code,
+        HttpServletResponse response) throws JsonProcessingException {
         String token = kakaoService.kakaoLogin(code);
 
         // JWT를 쿠키로 설정
@@ -141,22 +139,24 @@ public class UserController {
         ApiResponse apiResponse = ApiResponse.builder()
             .msg(ResponseText.KAKAO_LOGIN_SUCCESS.getMsg())
             .statuscode(String.valueOf(HttpStatus.OK.value()))
-            .data(null)
+            .data(token)
             .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
 
-    /** 구글 로그인 API
+    /**
+     * 구글 로그인 API
      *
-     * @param code 구글 서버로부터 전달받은 인가 코드
-    * @param response HTTP 응답 객체 (쿠키를 추가하기 위해 사용)
-    * @return 리다이렉트 URL
-    * @throws JsonProcessingException JSON 파싱 중 발생할 수 있는 예외
-    */
+     * @param code     구글 서버로부터 전달받은 인가 코드
+     * @param response HTTP 응답 객체 (쿠키를 추가하기 위해 사용)
+     * @return 리다이렉트 URL
+     * @throws JsonProcessingException JSON 파싱 중 발생할 수 있는 예외
+     */
     @GetMapping("/google/callback")
-    public ResponseEntity<ApiResponse> googleLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+    public ResponseEntity<ApiResponse> googleLogin(@RequestParam String code,
+        HttpServletResponse response) throws JsonProcessingException {
         String token = googleService.googleLogin(code);
 
         // JWT를 쿠키로 설정
@@ -167,7 +167,7 @@ public class UserController {
         ApiResponse apiResponse = ApiResponse.builder()
             .msg(ResponseText.GOOGLE_LOGIN_SUCCESS.getMsg())
             .statuscode(String.valueOf(HttpStatus.OK.value()))
-            .data(null)
+            .data(token)
             .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);

@@ -26,7 +26,13 @@ public enum ResponseText {
     PROFILE_CREATE_SUCCESS("프로필 생성 성공"),
     PROFILE_UPDATE_SUCCESS("프로필 업데이트 성공"),
     PROFILE_DELETE_SUCCESS("프로필 삭제 성공"),
-    PROFILE_FETCH_SUCCESS("프로필 조회 성공");
+    PROFILE_FETCH_SUCCESS("프로필 조회 성공"),
+
+    // waste
+    WASTE_RECORD_SUCCESS("쓰레기 기록 성공"),
+    WASTE_RECORD_FETCH_SUCCESS("쓰레기 기록 조회 성공"),
+    WASTE_RECORD_UPDATE_SUCCESS("쓰레기 기록 수정 성공"),
+    WASTE_RECORD_DELETE_SUCCESS("쓰레기 기록 삭제 성공");
 
     private String msg;
 

@@ -1,13 +1,15 @@
 package com.sw.ecogrowbackend.domain.auth.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sw.ecogrowbackend.common.Timestamped;
 import com.sw.ecogrowbackend.domain.profile.entity.Profile;
+import com.sw.ecogrowbackend.domain.waste.entity.WasteRecord;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -47,8 +49,13 @@ public class User extends Timestamped {
     private LocalDateTime resignedAt;
 
     // 양방향 연관관계 설정
+    @Setter
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Profile profile;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<WasteRecord> wasteRecords;
 
     // 기본 생성자
     public User(String username, String password, String email, UserRoleEnum role) {
@@ -92,11 +99,6 @@ public class User extends Timestamped {
     // 탈퇴 여부 확인
     public boolean isResigned() {
         return this.resignedAt != null;
-    }
-
-    // 프로필 설정 메서드
-    public void setProfile(Profile profile) {
-        this.profile = profile;
     }
 
     // 카카오 ID 업데이트 메서드
