@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "waste_record")
+@Table(name = "waste_records")
 public class WasteRecord extends Timestamped {
 
     @Id
