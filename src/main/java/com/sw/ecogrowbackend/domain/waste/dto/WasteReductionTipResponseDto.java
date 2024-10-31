@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class WasteReductionTipReponseDto {
+public class WasteReductionTipResponseDto {
 
     private Long id;
 
