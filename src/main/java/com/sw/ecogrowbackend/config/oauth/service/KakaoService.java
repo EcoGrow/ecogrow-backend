@@ -1,5 +1,7 @@
 package com.sw.ecogrowbackend.config.oauth.service;
 
+import com.sw.ecogrowbackend.domain.auth.entity.RefreshToken;
+import com.sw.ecogrowbackend.domain.auth.repository.RefreshTokenRepository;
 import org.springframework.beans.factory.annotation.Value;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -33,6 +35,7 @@ public class KakaoService {
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Value("${kakao.client.id}")
     private String clientId;
@@ -54,8 +57,13 @@ public class KakaoService {
         String accessToken = getToken(code);
         KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken); // 액세스 토큰으로 카카오 사용자 정보 조회
         User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo); // 사용자 등록 필요 시 등록
+
         String createToken = jwtUtil.createAccessToken(kakaoUser.getUsername(),
             kakaoUser.getRole().toString()); // JWT 생성
+        String refreshToken = jwtUtil.createRefreshToken(kakaoUser.getUsername(),
+            kakaoUser.getRole().toString());
+
+        refreshTokenRepository.save(new RefreshToken(refreshToken, kakaoUser));
         return createToken;
     }
 

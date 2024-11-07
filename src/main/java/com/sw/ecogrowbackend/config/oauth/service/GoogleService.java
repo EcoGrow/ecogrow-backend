@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sw.ecogrowbackend.config.oauth.dto.GoogleUserInfoDto;
+import com.sw.ecogrowbackend.domain.auth.entity.RefreshToken;
 import com.sw.ecogrowbackend.domain.auth.entity.User;
 import com.sw.ecogrowbackend.domain.auth.entity.UserRoleEnum;
+import com.sw.ecogrowbackend.domain.auth.repository.RefreshTokenRepository;
 import com.sw.ecogrowbackend.domain.auth.repository.UserRepository;
 import com.sw.ecogrowbackend.jwt.JwtUtil;
 import java.net.URI;
@@ -32,6 +34,7 @@ public class GoogleService {
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Value("${google.client.id}")
     private String clientId;
@@ -53,10 +56,16 @@ public class GoogleService {
         String accessToken = getToken(code);
         GoogleUserInfoDto googleUserInfo = getGoogleUserInfo(accessToken); // 액세스 토큰으로 구글 사용자 정보 조회
         User googleUser = registerGoogleUserIfNeeded(googleUserInfo); // 사용자 등록 필요 시 등록
+
         String createToken = jwtUtil.createAccessToken(googleUser.getUsername(),
             googleUser.getRole().toString()); // JWT 생성
+        String refreshToken = jwtUtil.createRefreshToken(googleUser.getUsername(),
+            googleUser.getRole().toString());
+
+        refreshTokenRepository.save(new RefreshToken(refreshToken, googleUser));
         return createToken;
     }
+
 
     /**
      * 인가 코드를 사용하여 구글 서버로부터 액세스 토큰을 얻는 메서드.
