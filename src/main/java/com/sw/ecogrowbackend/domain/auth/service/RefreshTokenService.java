@@ -49,7 +49,7 @@ public class RefreshTokenService {
 
         storedToken.updateToken(newRefreshToken);
 
-        return new TokenResponseDto(newAccessToken, newRefreshToken);
+        return new TokenResponseDto(user.getId(), newAccessToken, newRefreshToken);
     }
 
     /**
