@@ -129,17 +129,18 @@ public class UserController {
     @GetMapping("/kakao/callback")
     public ResponseEntity<ApiResponse> kakaoLogin(@RequestParam String code,
         HttpServletResponse response) throws JsonProcessingException {
-        String token = kakaoService.kakaoLogin(code);
+        TokenResponseDto responseDto = kakaoService.kakaoLogin(code);
 
         // JWT를 쿠키로 설정
-        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.substring(7));
+        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER,
+            responseDto.getAccessToken().substring(7));
         cookie.setPath("/");
         response.addCookie(cookie);
 
         ApiResponse apiResponse = ApiResponse.builder()
             .msg(ResponseText.KAKAO_LOGIN_SUCCESS.getMsg())
             .statuscode(String.valueOf(HttpStatus.OK.value()))
-            .data(token)
+            .data(responseDto)
             .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
@@ -157,17 +158,18 @@ public class UserController {
     @GetMapping("/google/callback")
     public ResponseEntity<ApiResponse> googleLogin(@RequestParam String code,
         HttpServletResponse response) throws JsonProcessingException {
-        String token = googleService.googleLogin(code);
+        TokenResponseDto responseDto = googleService.googleLogin(code);
 
         // JWT를 쿠키로 설정
-        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.substring(7));
+        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER,
+            responseDto.getAccessToken().substring(7));
         cookie.setPath("/");
         response.addCookie(cookie);
 
         ApiResponse apiResponse = ApiResponse.builder()
             .msg(ResponseText.GOOGLE_LOGIN_SUCCESS.getMsg())
             .statuscode(String.valueOf(HttpStatus.OK.value()))
-            .data(token)
+            .data(responseDto)
             .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);

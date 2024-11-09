@@ -4,11 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sw.ecogrowbackend.config.oauth.dto.GoogleUserInfoDto;
-import com.sw.ecogrowbackend.domain.auth.entity.RefreshToken;
+import com.sw.ecogrowbackend.domain.auth.dto.TokenResponseDto;
 import com.sw.ecogrowbackend.domain.auth.entity.User;
 import com.sw.ecogrowbackend.domain.auth.entity.UserRoleEnum;
-import com.sw.ecogrowbackend.domain.auth.repository.RefreshTokenRepository;
 import com.sw.ecogrowbackend.domain.auth.repository.UserRepository;
+import com.sw.ecogrowbackend.domain.auth.service.RefreshTokenService;
 import com.sw.ecogrowbackend.jwt.JwtUtil;
 import java.net.URI;
 import java.util.UUID;
@@ -34,7 +34,7 @@ public class GoogleService {
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenService refreshTokenService;
 
     @Value("${google.client.id}")
     private String clientId;
@@ -52,20 +52,19 @@ public class GoogleService {
      * @return 생성된 JWT 토큰을 반환
      * @throws JsonProcessingException JSON 파싱 중 발생할 수 있는 예외
      */
-    public String googleLogin(String code) throws JsonProcessingException {
+    public TokenResponseDto googleLogin(String code) throws JsonProcessingException {
         String accessToken = getToken(code);
         GoogleUserInfoDto googleUserInfo = getGoogleUserInfo(accessToken); // 액세스 토큰으로 구글 사용자 정보 조회
         User googleUser = registerGoogleUserIfNeeded(googleUserInfo); // 사용자 등록 필요 시 등록
 
-        String createToken = jwtUtil.createAccessToken(googleUser.getUsername(),
+        String newAccessToken = jwtUtil.createAccessToken(googleUser.getUsername(),
             googleUser.getRole().toString()); // JWT 생성
-        String refreshToken = jwtUtil.createRefreshToken(googleUser.getUsername(),
+        String newRefreshToken = jwtUtil.createRefreshToken(googleUser.getUsername(),
             googleUser.getRole().toString());
 
-        refreshTokenRepository.save(new RefreshToken(refreshToken, googleUser));
-        return createToken;
+        refreshTokenService.saveRefreshToken(googleUser.getId(), newRefreshToken);
+        return new TokenResponseDto(googleUser.getId(), newAccessToken, newRefreshToken);
     }
-
 
     /**
      * 인가 코드를 사용하여 구글 서버로부터 액세스 토큰을 얻는 메서드.

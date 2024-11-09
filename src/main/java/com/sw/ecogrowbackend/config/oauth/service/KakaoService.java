@@ -1,7 +1,7 @@
 package com.sw.ecogrowbackend.config.oauth.service;
 
-import com.sw.ecogrowbackend.domain.auth.entity.RefreshToken;
-import com.sw.ecogrowbackend.domain.auth.repository.RefreshTokenRepository;
+import com.sw.ecogrowbackend.domain.auth.dto.TokenResponseDto;
+import com.sw.ecogrowbackend.domain.auth.service.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Value;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,7 +35,7 @@ public class KakaoService {
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenService refreshTokenService;
 
     @Value("${kakao.client.id}")
     private String clientId;
@@ -53,18 +53,18 @@ public class KakaoService {
      * @return 생성된 JWT 토큰을 반환
      * @throws JsonProcessingException JSON 파싱 중 발생할 수 있는 예외
      */
-    public String kakaoLogin(String code) throws JsonProcessingException {
+    public TokenResponseDto kakaoLogin(String code) throws JsonProcessingException {
         String accessToken = getToken(code);
         KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken); // 액세스 토큰으로 카카오 사용자 정보 조회
         User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo); // 사용자 등록 필요 시 등록
 
-        String createToken = jwtUtil.createAccessToken(kakaoUser.getUsername(),
+        String newAccessToken = jwtUtil.createAccessToken(kakaoUser.getUsername(),
             kakaoUser.getRole().toString()); // JWT 생성
-        String refreshToken = jwtUtil.createRefreshToken(kakaoUser.getUsername(),
+        String newRefreshToken = jwtUtil.createRefreshToken(kakaoUser.getUsername(),
             kakaoUser.getRole().toString());
 
-        refreshTokenRepository.save(new RefreshToken(refreshToken, kakaoUser));
-        return createToken;
+        refreshTokenService.saveRefreshToken(kakaoUser.getId(), newRefreshToken);
+        return new TokenResponseDto(kakaoUser.getId(), newAccessToken, newRefreshToken);
     }
 
     /**
