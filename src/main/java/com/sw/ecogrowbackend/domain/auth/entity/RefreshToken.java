@@ -1,5 +1,6 @@
 package com.sw.ecogrowbackend.domain.auth.entity;
 
+import com.sw.ecogrowbackend.common.Timestamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class RefreshToken {
+public class RefreshToken extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
