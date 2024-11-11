@@ -69,8 +69,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorizeHttpRequests ->
             authorizeHttpRequests
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .requestMatchers("/api/user/signup", "/api/user/login", "/api/user/kakao/callback", "/api/user/google/callback").permitAll()
-                .requestMatchers("/api/user/logout").authenticated()
+                .requestMatchers("/api/users/signup", "/api/users/login", "/api/users/kakao/callback", "/api/users/google/callback").permitAll()
+                .requestMatchers("/api/users/logout").authenticated()
                 .anyRequest().authenticated() // 그 외 요청은 인증 필요
         );
 

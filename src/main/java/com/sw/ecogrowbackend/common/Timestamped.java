@@ -15,21 +15,19 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Timestamped {
+
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
-    @LastModifiedDate
     private LocalDateTime modifiedAt;
 
     @PrePersist
     protected void onCreate() {
-        if (updatedAt == null) {
-            updatedAt = createdAt;
+        if (modifiedAt == null) {
+            modifiedAt = createdAt;
         }
     }
 }

@@ -82,7 +82,7 @@ public class UserService {
 
         refreshTokenService.saveRefreshToken(user.getId(), refreshToken);
 
-        return new TokenResponseDto(accessToken, refreshToken);
+        return new TokenResponseDto(user.getId(), accessToken, refreshToken);
     }
 
     /**

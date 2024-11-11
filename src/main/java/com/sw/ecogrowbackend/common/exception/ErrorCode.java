@@ -36,6 +36,16 @@ public enum ErrorCode {
     NOT_AUTHENTICATED_LOGIN(HttpStatus.FORBIDDEN, "권한에 맞지 않는 로그인입니다."),
     RESIGN_USER(HttpStatus.BAD_REQUEST, "탈퇴한 회원입니다."),
 
+    // kakao
+    KAKAO_COMMUNICATION_ERROR(HttpStatus.BAD_REQUEST, "카카오 API와의 통신에 실패했습니다."),
+    KAKAO_TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "카카오 액세스 토큰을 가져오는 데 실패했습니다."),
+    KAKAO_USER_INFO_ERROR(HttpStatus.BAD_REQUEST, "카카오 사용자 정보를 가져오는 데 실패했습니다."),
+
+    // google
+    GOOGLE_COMMUNICATION_ERROR(HttpStatus.BAD_REQUEST, "구글 API와의 통신에 실패했습니다."),
+    GOOGLE_TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "구글 액세스 토큰을 가져오는 데 실패했습니다."),
+    GOOGLE_USER_INFO_ERROR(HttpStatus.BAD_REQUEST, "구글 사용자 정보를 가져오는 데 실패했습니다."),
+
     // Admin
     NOT_AUTHORIZED_ADMIN(HttpStatus.FORBIDDEN, "관리자 권한이 필요합니다."),
 

@@ -3,10 +3,14 @@ package com.sw.ecogrowbackend.config.oauth.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sw.ecogrowbackend.common.exception.CustomException;
+import com.sw.ecogrowbackend.common.exception.ErrorCode;
 import com.sw.ecogrowbackend.config.oauth.dto.GoogleUserInfoDto;
+import com.sw.ecogrowbackend.domain.auth.dto.TokenResponseDto;
 import com.sw.ecogrowbackend.domain.auth.entity.User;
 import com.sw.ecogrowbackend.domain.auth.entity.UserRoleEnum;
 import com.sw.ecogrowbackend.domain.auth.repository.UserRepository;
+import com.sw.ecogrowbackend.domain.auth.service.RefreshTokenService;
 import com.sw.ecogrowbackend.jwt.JwtUtil;
 import java.net.URI;
 import java.util.UUID;
@@ -32,6 +36,7 @@ public class GoogleService {
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
+    private final RefreshTokenService refreshTokenService;
 
     @Value("${google.client.id}")
     private String clientId;
@@ -49,13 +54,18 @@ public class GoogleService {
      * @return 생성된 JWT 토큰을 반환
      * @throws JsonProcessingException JSON 파싱 중 발생할 수 있는 예외
      */
-    public String googleLogin(String code) throws JsonProcessingException {
+    public TokenResponseDto googleLogin(String code) throws JsonProcessingException {
         String accessToken = getToken(code);
         GoogleUserInfoDto googleUserInfo = getGoogleUserInfo(accessToken); // 액세스 토큰으로 구글 사용자 정보 조회
         User googleUser = registerGoogleUserIfNeeded(googleUserInfo); // 사용자 등록 필요 시 등록
-        String createToken = jwtUtil.createAccessToken(googleUser.getUsername(),
+
+        String newAccessToken = jwtUtil.createAccessToken(googleUser.getUsername(),
             googleUser.getRole().toString()); // JWT 생성
-        return createToken;
+        String newRefreshToken = jwtUtil.createRefreshToken(googleUser.getUsername(),
+            googleUser.getRole().toString());
+
+        refreshTokenService.saveRefreshToken(googleUser.getId(), newRefreshToken);
+        return new TokenResponseDto(googleUser.getId(), newAccessToken, newRefreshToken);
     }
 
     /**
@@ -94,14 +104,20 @@ public class GoogleService {
             .headers(headers)
             .body(body);
 
-        ResponseEntity<String> response = restTemplate.exchange(
-            requestEntity,
-            String.class
-        );
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.exchange(requestEntity, String.class);
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.GOOGLE_COMMUNICATION_ERROR);
+        }
 
         // JSON 응답에서 액세스 토큰 추출
         JsonNode jsonNode = new ObjectMapper().readTree(response.getBody());
-        return jsonNode.get("access_token").asText();
+        if (jsonNode.has("access_token")) {
+            return jsonNode.get("access_token").asText();
+        } else {
+            throw new CustomException(ErrorCode.GOOGLE_TOKEN_ERROR);
+        }
     }
 
     /**
@@ -133,16 +149,11 @@ public class GoogleService {
             .headers(headers)
             .build();
 
-        ResponseEntity<String> response = restTemplate.exchange(
-            requestEntity,
-            String.class
-        );
-
-        // 응답이 성공적인지 확인
-        if (!response.getStatusCode().is2xxSuccessful()) {
-            log.error(
-                "Failed to retrieve user information from Google: " + response.getStatusCode());
-            throw new IllegalStateException("Failed to retrieve user information from Google");
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.exchange(requestEntity, String.class);
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.GOOGLE_COMMUNICATION_ERROR);
         }
 
         // JSON 응답에서 사용자 정보 추출
@@ -154,10 +165,8 @@ public class GoogleService {
         JsonNode emailNode = jsonNode.get("email");
 
         if (idNode == null || nameNode == null || emailNode == null) {
-            log.error(
-                "Missing required fields in Google user info response: " + jsonNode.toString());
-            throw new IllegalStateException(
-                "Google user information response is missing required fields");
+            log.error("Google 응답에 필수 필드가 없습니다: " + jsonNode.toString());
+            throw new CustomException(ErrorCode.GOOGLE_USER_INFO_ERROR);
         }
 
         Long id = idNode.asLong();

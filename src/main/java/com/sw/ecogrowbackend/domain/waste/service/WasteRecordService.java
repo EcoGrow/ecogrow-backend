@@ -13,24 +13,18 @@ import com.sw.ecogrowbackend.domain.waste.entity.WasteTypeUtils;
 import com.sw.ecogrowbackend.domain.waste.repository.WasteRecordRepository;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class WasteRecordService {
 
     private final UserRepository userRepository;
     private final WasteRecordRepository wasteRecordRepository;
-
-    @Autowired
-    public WasteRecordService(UserRepository userRepository,
-        WasteRecordRepository wasteRecordRepository) {
-        this.userRepository = userRepository;
-        this.wasteRecordRepository = wasteRecordRepository;
-    }
 
     // 쓰레기 기록 저장 메서드
     public WasteRecord saveWasteRecord(User user, WasteRecordRequestDto requestDto) {
