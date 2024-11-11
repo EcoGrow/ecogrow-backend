@@ -1,19 +1,20 @@
 package com.sw.ecogrowbackend.config.oauth.service;
 
-import com.sw.ecogrowbackend.domain.auth.dto.TokenResponseDto;
-import com.sw.ecogrowbackend.domain.auth.service.RefreshTokenService;
-import org.springframework.beans.factory.annotation.Value;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sw.ecogrowbackend.common.exception.CustomException;
+import com.sw.ecogrowbackend.common.exception.ErrorCode;
 import com.sw.ecogrowbackend.config.oauth.dto.KakaoUserInfoDto;
+import com.sw.ecogrowbackend.domain.auth.dto.TokenResponseDto;
 import com.sw.ecogrowbackend.domain.auth.entity.User;
 import com.sw.ecogrowbackend.domain.auth.entity.UserRoleEnum;
 import com.sw.ecogrowbackend.domain.auth.repository.UserRepository;
+import com.sw.ecogrowbackend.domain.auth.service.RefreshTokenService;
 import com.sw.ecogrowbackend.jwt.JwtUtil;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.UUID;
 
 @Slf4j(topic = "KAKAO Login")
 @Service
@@ -103,14 +105,20 @@ public class KakaoService {
             .headers(headers)
             .body(body);
 
-        ResponseEntity<String> response = restTemplate.exchange(
-            requestEntity,
-            String.class
-        );
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.exchange(requestEntity, String.class);
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.KAKAO_COMMUNICATION_ERROR);
+        }
 
         // JSON 응답에서 액세스 토큰 추출
         JsonNode jsonNode = new ObjectMapper().readTree(response.getBody());
-        return jsonNode.get("access_token").asText();
+        if (jsonNode.has("access_token")) {
+            return jsonNode.get("access_token").asText();
+        } else {
+            throw new CustomException(ErrorCode.KAKAO_TOKEN_ERROR);
+        }
     }
 
     /**
@@ -142,18 +150,22 @@ public class KakaoService {
             .headers(headers)
             .body(new LinkedMultiValueMap<>());
 
-        ResponseEntity<String> response = restTemplate.exchange(
-            requestEntity,
-            String.class
-        );
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.exchange(requestEntity, String.class);
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.KAKAO_COMMUNICATION_ERROR);
+        }
 
         // JSON 응답에서 사용자 정보 추출
         JsonNode jsonNode = new ObjectMapper().readTree(response.getBody());
+        if (!jsonNode.has("id") || !jsonNode.has("properties")) {
+            throw new CustomException(ErrorCode.KAKAO_USER_INFO_ERROR);
+        }
+
         Long id = jsonNode.get("id").asLong();
-        String nickname = jsonNode.get("properties")
-            .get("nickname").asText();
-        String email = jsonNode.get("kakao_account")
-            .get("email").asText();
+        String nickname = jsonNode.get("properties").get("nickname").asText();
+        String email = jsonNode.get("kakao_account").get("email").asText();
 
         log.info("카카오 사용자 정보: " + id + ", " + nickname + ", " + email);
 
