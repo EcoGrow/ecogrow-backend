@@ -1,5 +1,6 @@
 package com.sw.ecogrowbackend.domain.waste.entity;
 
+import com.sw.ecogrowbackend.common.Timestamped;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +13,7 @@ import lombok.Setter;
 
 @Getter
 @Entity
-public class WasteReductionTip {
+public class WasteReductionTip extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
