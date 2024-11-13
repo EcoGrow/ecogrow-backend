@@ -4,22 +4,28 @@ import com.sw.ecogrowbackend.common.WasteReductionTipMessage;
 import com.sw.ecogrowbackend.domain.waste.dto.WasteReductionTipResponseDto;
 import com.sw.ecogrowbackend.domain.waste.entity.WasteRecord;
 import com.sw.ecogrowbackend.domain.waste.entity.WasteItem;
+import com.sw.ecogrowbackend.domain.waste.entity.WasteReductionTip;
 import com.sw.ecogrowbackend.domain.waste.repository.WasteRecordRepository;
+import com.sw.ecogrowbackend.domain.waste.repository.WasteReductionTipRepository;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class WasteReductionTipService {
 
     private final WasteRecordRepository wasteRecordRepository;
+    private final WasteReductionTipRepository wasteReductionTipRepository;
 
     private static final double PLASTIC_THRESHOLD = 8.0;
     private static final double GLASS_THRESHOLD = 3.0;
@@ -193,5 +199,15 @@ public class WasteReductionTipService {
             .map(Map.Entry::getValue) // 배출량 값만 추출
             .collect(Collectors.toList());
         return monthlyEmissions;
+    }
+
+    // 3일 지난 팁을 삭제하는 스케줄러
+    @Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
+    @Transactional
+    public void deleteOldTips() {
+        LocalDateTime cutoffDate = LocalDateTime.now().minusDays(3);
+        List<WasteReductionTip> oldTips = wasteReductionTipRepository.findByCreatedAtBefore(
+            cutoffDate);
+        wasteReductionTipRepository.deleteAll(oldTips);
     }
 }
