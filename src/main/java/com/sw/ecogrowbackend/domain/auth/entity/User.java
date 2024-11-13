@@ -2,6 +2,7 @@ package com.sw.ecogrowbackend.domain.auth.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sw.ecogrowbackend.common.Timestamped;
+import com.sw.ecogrowbackend.domain.product.entity.UserRecommendation;
 import com.sw.ecogrowbackend.domain.profile.entity.Profile;
 import com.sw.ecogrowbackend.domain.waste.entity.WasteRecord;
 import jakarta.persistence.*;
@@ -43,7 +44,6 @@ public class User extends Timestamped {
     @Enumerated(value = EnumType.STRING)
     private ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
 
-    // 탈퇴 상태 확인 메서드
     // 탈퇴 여부 및 탈퇴 시점 저장
     @Column(nullable = true)
     private LocalDateTime resignedAt;
@@ -56,6 +56,9 @@ public class User extends Timestamped {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<WasteRecord> wasteRecords;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRecommendation> recommendations;
 
     // 기본 생성자
     public User(String username, String password, String email, UserRoleEnum role) {

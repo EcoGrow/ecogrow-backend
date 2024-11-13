@@ -1,5 +1,6 @@
 package com.sw.ecogrowbackend.domain.product.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -32,4 +34,7 @@ public class RecommendationCategory {
         inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Product> products = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recommendationCategory", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRecommendation> recommendations;
 }
