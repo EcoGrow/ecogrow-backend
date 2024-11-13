@@ -21,7 +21,10 @@ public enum WasteReductionTipMessage {
     RECYCLABLE_PROPORTION_TIP(
         "재활용 가능한 품목을 올바르게 분류하고 배출해 주세요. 특히 플라스틱, 유리, 금속은 분리 배출해 재활용률을 높일 수 있습니다."),
     INCREASING_EMISSION_TREND_TIP(
-        "최근 쓰레기 배출량이 꾸준히 증가하고 있습니다. 일상에서 재사용 가능한 제품을 선택하고 불필요한 소비를 줄여 쓰레기 배출량을 낮춰보세요.");
+        "최근 쓰레기 배출량이 꾸준히 증가하고 있습니다. 일상에서 재사용 가능한 제품을 선택하고 불필요한 소비를 줄여 쓰레기 배출량을 낮춰보세요."),
+    MONTHLY_INCREASING_EMISSION_TREND_TIP(
+        "지난 달 보다 쓰레기 배출량이 증가하고 있습니다. 월별 배출량을 줄이기 위해 재사용 제품을 선택하고 불필요한 소비를 줄여보세요.");
+
 
     private final String msg;
 
