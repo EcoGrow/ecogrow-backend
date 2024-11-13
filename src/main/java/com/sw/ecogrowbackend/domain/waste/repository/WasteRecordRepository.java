@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WasteRecordRepository extends JpaRepository<WasteRecord, Long> {
+public interface WasteRecordRepository extends JpaRepository<WasteRecord, Long>, WasteRecordRepositoryCustom {
 
     List<WasteRecord> findAllByUser(User user);
 
