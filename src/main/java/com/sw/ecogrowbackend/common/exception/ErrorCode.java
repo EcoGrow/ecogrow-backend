@@ -57,7 +57,17 @@ public enum ErrorCode {
     DUPLICATE_RECOMMENDATION(HttpStatus.BAD_REQUEST, "이미 추천한 게시글입니다."),
     CANNOT_RECOMMEND_OWN_POST(HttpStatus.BAD_REQUEST, "자신의 게시글은 추천할 수 없습니다."),
     INVALID_POST_DATA(HttpStatus.BAD_REQUEST, "유효하지 않은 게시글 데이터입니다."),
-    INVALID_COMMENT_DATA(HttpStatus.BAD_REQUEST, "유효하지 않은 댓글 데이터입니다.");
+    INVALID_COMMENT_DATA(HttpStatus.BAD_REQUEST, "유효하지 않은 댓글 데이터입니다."),
+
+    // kakao
+    KAKAO_COMMUNICATION_ERROR(HttpStatus.BAD_REQUEST, "카카오 API와의 통신에 실패했습니다."),
+    KAKAO_TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "카카오 액세스 토큰을 가져오는 데 실패했습니다."),
+    KAKAO_USER_INFO_ERROR(HttpStatus.BAD_REQUEST, "카카오 사용자 정보를 가져오는 데 실패했습니다."),
+
+    // google
+    GOOGLE_COMMUNICATION_ERROR(HttpStatus.BAD_REQUEST, "구글 API와의 통신에 실패했습니다."),
+    GOOGLE_TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "구글 액세스 토큰을 가져오는 데 실패했습니다."),
+    GOOGLE_USER_INFO_ERROR(HttpStatus.BAD_REQUEST, "구글 사용자 정보를 가져오는 데 실패했습니다.");
 
     private final HttpStatus httpStatus;
     private final String msg;
