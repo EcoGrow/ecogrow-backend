@@ -1,7 +1,7 @@
-package com.sw.ecogrowbackend.chat.entity;
+package com.sw.ecogrowbackend.domain.chat.entity;
 
 import com.sw.ecogrowbackend.domain.auth.entity.User;
-import com.sw.ecogrowbackend.chat.MessageType;
+import com.sw.ecogrowbackend.domain.chat.MessageType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

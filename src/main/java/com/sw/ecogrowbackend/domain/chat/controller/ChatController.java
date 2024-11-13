@@ -1,8 +1,8 @@
-package com.sw.ecogrowbackend.chat.controller;
+package com.sw.ecogrowbackend.domain.chat.controller;
 
-import com.sw.ecogrowbackend.chat.dto.ChatMessageDto;
-import com.sw.ecogrowbackend.chat.MessageType;
-import com.sw.ecogrowbackend.chat.service.ChatService;
+import com.sw.ecogrowbackend.domain.chat.dto.ChatMessageDto;
+import com.sw.ecogrowbackend.domain.chat.MessageType;
+import com.sw.ecogrowbackend.domain.chat.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;

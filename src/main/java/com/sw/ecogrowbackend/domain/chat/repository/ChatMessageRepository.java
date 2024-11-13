@@ -1,6 +1,6 @@
-package com.sw.ecogrowbackend.chat.repository;
+package com.sw.ecogrowbackend.domain.chat.repository;
 
-import com.sw.ecogrowbackend.chat.entity.ChatMessage;
+import com.sw.ecogrowbackend.domain.chat.entity.ChatMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

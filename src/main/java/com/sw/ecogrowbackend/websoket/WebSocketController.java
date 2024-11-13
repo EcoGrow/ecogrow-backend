@@ -1,8 +1,8 @@
 package com.sw.ecogrowbackend.websoket;
 
-import com.sw.ecogrowbackend.community.dto.CommentDto;
-import com.sw.ecogrowbackend.community.entity.Comment;
-import com.sw.ecogrowbackend.community.service.CommentService;
+import com.sw.ecogrowbackend.domain.community.dto.CommentDto;
+import com.sw.ecogrowbackend.domain.community.entity.Comment;
+import com.sw.ecogrowbackend.domain.community.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.handler.annotation.MessageMapping;

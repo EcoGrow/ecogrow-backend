@@ -1,7 +1,7 @@
-package com.sw.ecogrowbackend.community.repository;
+package com.sw.ecogrowbackend.domain.community.repository;
 
-import com.sw.ecogrowbackend.community.entity.Comment;
-import com.sw.ecogrowbackend.community.entity.Post;
+import com.sw.ecogrowbackend.domain.community.entity.Comment;
+import com.sw.ecogrowbackend.domain.community.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

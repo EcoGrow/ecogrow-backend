@@ -1,4 +1,4 @@
-package com.sw.ecogrowbackend.community.dto;
+package com.sw.ecogrowbackend.domain.community.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDto {
-    private String title;
+public class CommentDto {
     private String content;
-    private boolean isNotice;
 }

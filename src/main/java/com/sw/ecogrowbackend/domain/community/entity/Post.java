@@ -1,4 +1,4 @@
-package com.sw.ecogrowbackend.community.entity;
+package com.sw.ecogrowbackend.domain.community.entity;
 
 import com.sw.ecogrowbackend.domain.profile.entity.Profile;
 import jakarta.persistence.*;

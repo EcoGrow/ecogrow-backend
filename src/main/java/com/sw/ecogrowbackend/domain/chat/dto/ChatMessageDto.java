@@ -1,6 +1,6 @@
-package com.sw.ecogrowbackend.chat.dto;
+package com.sw.ecogrowbackend.domain.chat.dto;
 
-import com.sw.ecogrowbackend.chat.MessageType;
+import com.sw.ecogrowbackend.domain.chat.MessageType;
 
 public class ChatMessageDto {
 
