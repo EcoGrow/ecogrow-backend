@@ -1,9 +1,12 @@
-package com.sw.ecogrowbackend.domain.product;
+package com.sw.ecogrowbackend.domain.product.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,4 +28,7 @@ public class Product {
     private double price;
 
     private String url;
+
+    @ManyToMany(mappedBy = "products")
+    private List<RecommendationCategory> recommendationCategories = new ArrayList<>();
 }
