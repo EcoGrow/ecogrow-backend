@@ -5,6 +5,10 @@ import com.sw.ecogrowbackend.domain.waste.dto.WasteReductionTipResponseDto;
 import com.sw.ecogrowbackend.domain.waste.entity.WasteRecord;
 import com.sw.ecogrowbackend.domain.waste.entity.WasteItem;
 import com.sw.ecogrowbackend.domain.waste.repository.WasteRecordRepository;
+import java.time.YearMonth;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,8 +45,11 @@ public class WasteReductionTipService {
         // 2. 재활용 가능 품목의 비율 확인
         checkRecyclableProportion(records, tips);
 
-        // 3. 기간별 배출량 증가 추세 분석
-        checkEmissionTrend(records, tips);
+        // 3. 최근 기간별 배출량 증가 추세 분석
+        checkRecentEmissionTrend(records, tips);
+
+        // 4. 월별 배출량 분석
+        checkMonthlyEmissionTrend(records, tips);
 
         return tips;
     }
@@ -113,11 +120,40 @@ public class WasteReductionTipService {
         }
     }
 
-    private void checkEmissionTrend(List<WasteRecord> records,
+    // 최근 배출량 증가 추세 확인 메서드
+    private void checkRecentEmissionTrend(List<WasteRecord> records,
         List<WasteReductionTipResponseDto> tips) {
-        List<Double> monthlyEmissions = getMonthlyEmissions(records); // 월별 배출량을 계산한다고 가정
 
-        if (monthlyEmissions.isEmpty() || records.isEmpty()) {
+        // 최신 기록을 날짜 순으로 정렬 후 최근 3개의 배출량만 가져옴
+        List<Double> recentEmissions = records.stream()
+            .sorted(Comparator.comparing(WasteRecord::getCreatedAt).reversed())
+            .limit(3) // 최근 3개의 기록만 사용
+            .map(record -> record.getWasteItems().stream()
+                .mapToDouble(WasteItem::getAmount)
+                .sum())
+            .collect(Collectors.toList());
+
+        // 최근 배출량이 증가 추세인지 확인
+        boolean isIncreasingTrend = true;
+        for (int i = 1; i < recentEmissions.size(); i++) {
+            if (recentEmissions.get(i) <= recentEmissions.get(i - 1)) {
+                isIncreasingTrend = false;
+                break;
+            }
+        }
+
+        if (isIncreasingTrend && recentEmissions.size() == 3) {
+            tips.add(new WasteReductionTipResponseDto(
+                WasteReductionTipMessage.INCREASING_EMISSION_TREND_TIP.getMsg()));
+        }
+    }
+
+    // 월별 배출량 확인 메서드
+    private void checkMonthlyEmissionTrend(List<WasteRecord> records,
+        List<WasteReductionTipResponseDto> tips) {
+
+        List<Double> monthlyEmissions = getMonthlyEmissions(records); // 월별 배출량 계산
+        if (monthlyEmissions.size() < 2) {
             return;
         }
 
@@ -129,15 +165,33 @@ public class WasteReductionTipService {
             }
         }
 
-        // 배출량이 증가 추세일 경우 팁을 추가
         if (isIncreasingTrend) {
             tips.add(new WasteReductionTipResponseDto(
-                WasteReductionTipMessage.INCREASING_EMISSION_TREND_TIP.getMsg()));
+                WasteReductionTipMessage.MONTHLY_INCREASING_EMISSION_TREND_TIP.getMsg()));
         }
     }
 
     // 월별 배출량을 계산하는 메서드
     private List<Double> getMonthlyEmissions(List<WasteRecord> records) {
-        return new ArrayList<>();
+
+        if (records.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // WasteRecord의 날짜를 기준으로 YearMonth로 그룹화하여 월별 배출량을 합산
+        Map<YearMonth, Double> monthlyEmissionsMap = records.stream()
+            .collect(Collectors.groupingBy(
+                record -> YearMonth.from(record.getCreatedAt()), // YearMonth 단위로 그룹화
+                Collectors.summingDouble(record -> record.getWasteItems().stream()
+                    .mapToDouble(WasteItem::getAmount)
+                    .sum())
+            ));
+
+        // YearMonth 기준으로 정렬하고, 월별 배출량을 리스트로 변환
+        List<Double> monthlyEmissions = monthlyEmissionsMap.entrySet().stream()
+            .sorted(Map.Entry.comparingByKey()) // YearMonth 기준으로 정렬
+            .map(Map.Entry::getValue) // 배출량 값만 추출
+            .collect(Collectors.toList());
+        return monthlyEmissions;
     }
 }
