@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "waste_record")
+@Table(name = "waste_records")
 public class WasteRecord extends Timestamped {
 
     @Id
@@ -28,6 +28,10 @@ public class WasteRecord extends Timestamped {
     @OneToMany(mappedBy = "wasteRecord", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("wasteRecord")
     private List<WasteItem> wasteItems = new ArrayList<>(); // 여러 쓰레기 항목을 저장할 수 있도록 설정
+
+    @OneToMany(mappedBy = "wasteRecord", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("wasteRecord")
+    private List<WasteReductionTip> wasteReductionTips = new ArrayList<>();
 
     public WasteRecord(User user) {
         this.user = user;

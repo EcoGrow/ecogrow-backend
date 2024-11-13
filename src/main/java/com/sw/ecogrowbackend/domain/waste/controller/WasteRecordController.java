@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/waste/record")
+@RequestMapping("/api/waste/records")
 public class WasteRecordController {
 
     private final WasteRecordService wasteRecordService;
@@ -84,7 +84,7 @@ public class WasteRecordController {
      * @param userId 사용자 아이디
      * @return 쓰레기 기록 목록 응답 데이터
      */
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<ApiResponse> getWasteRecords(
         @PathVariable Long userId) {
         // 인증된 사용자의 ID를 이용하여 기록 조회

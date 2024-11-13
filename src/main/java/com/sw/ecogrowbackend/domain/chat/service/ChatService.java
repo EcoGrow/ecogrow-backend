@@ -1,10 +1,10 @@
-package com.sw.ecogrowbackend.chat.service;
+package com.sw.ecogrowbackend.domain.chat.service;
 
 import com.sw.ecogrowbackend.domain.auth.entity.User;
 import com.sw.ecogrowbackend.domain.auth.repository.UserRepository;
-import com.sw.ecogrowbackend.chat.dto.ChatMessageDto;
-import com.sw.ecogrowbackend.chat.entity.ChatMessage;
-import com.sw.ecogrowbackend.chat.repository.ChatMessageRepository;
+import com.sw.ecogrowbackend.domain.chat.dto.ChatMessageDto;
+import com.sw.ecogrowbackend.domain.chat.entity.ChatMessage;
+import com.sw.ecogrowbackend.domain.chat.repository.ChatMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

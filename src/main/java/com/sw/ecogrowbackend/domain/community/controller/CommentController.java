@@ -1,8 +1,8 @@
-package com.sw.ecogrowbackend.community.controller;
+package com.sw.ecogrowbackend.domain.community.controller;
 
-import com.sw.ecogrowbackend.community.dto.CommentDto;
-import com.sw.ecogrowbackend.community.entity.Comment;
-import com.sw.ecogrowbackend.community.service.CommentService;
+import com.sw.ecogrowbackend.domain.community.dto.CommentDto;
+import com.sw.ecogrowbackend.domain.community.entity.Comment;
+import com.sw.ecogrowbackend.domain.community.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

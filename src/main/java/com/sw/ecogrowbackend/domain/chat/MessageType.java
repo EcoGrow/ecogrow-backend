@@ -1,4 +1,4 @@
-package com.sw.ecogrowbackend.chat;
+package com.sw.ecogrowbackend.domain.chat;
 
 public enum MessageType {
     CHAT,

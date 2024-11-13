@@ -10,7 +10,6 @@ import com.sw.ecogrowbackend.domain.auth.repository.UserRepository;
 import com.sw.ecogrowbackend.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,10 +36,10 @@ public class RefreshTokenService {
         }
 
         RefreshToken storedToken = refreshTokenRepository.findByToken(refreshToken)
-            .orElseThrow(() -> new IllegalArgumentException("Refresh token not found"));
+            .orElseThrow(() -> new CustomException(ErrorCode.TOKEN_NOT_FOUND));
 
         User user = userRepository.findByUsername(storedToken.getUser().getUsername())
-            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         String newAccessToken = jwtUtil.createAccessToken(user.getUsername(),
             user.getRole().toString());
@@ -49,7 +48,7 @@ public class RefreshTokenService {
 
         storedToken.updateToken(newRefreshToken);
 
-        return new TokenResponseDto(newAccessToken, newRefreshToken);
+        return new TokenResponseDto(user.getId(), newAccessToken, newRefreshToken);
     }
 
     /**
@@ -60,9 +59,9 @@ public class RefreshTokenService {
      */
     @Transactional
     public void saveRefreshToken(Long userId, String refreshToken) {
-        User user = userRepository.findById(userId).orElseThrow(
-            () -> new IllegalArgumentException("사용자를 찾을 수 없습니다.")
-        );
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
         RefreshToken token = refreshTokenRepository.findByUserId(userId)
             .orElseGet(() -> new RefreshToken(refreshToken, user));
 

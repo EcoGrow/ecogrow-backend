@@ -1,12 +1,12 @@
-package com.sw.ecogrowbackend.community.service;
+package com.sw.ecogrowbackend.domain.community.service;
 
 import com.sw.ecogrowbackend.common.exception.CustomException;
 import com.sw.ecogrowbackend.common.exception.ErrorCode;
-import com.sw.ecogrowbackend.community.dto.CommentDto;
-import com.sw.ecogrowbackend.community.entity.Comment;
-import com.sw.ecogrowbackend.community.entity.Post;
-import com.sw.ecogrowbackend.community.repository.CommentRepository;
-import com.sw.ecogrowbackend.community.repository.PostRepository;
+import com.sw.ecogrowbackend.domain.community.dto.CommentDto;
+import com.sw.ecogrowbackend.domain.community.entity.Comment;
+import com.sw.ecogrowbackend.domain.community.entity.Post;
+import com.sw.ecogrowbackend.domain.community.repository.CommentRepository;
+import com.sw.ecogrowbackend.domain.community.repository.PostRepository;
 import com.sw.ecogrowbackend.domain.profile.entity.Profile;
 import com.sw.ecogrowbackend.domain.profile.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
