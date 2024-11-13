@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-// API에서 발생할 수 있는 다양한 예외 상황을 일관되게 관리하기 위한 열거형
 @AllArgsConstructor
 @Getter
 public enum ErrorCode {
@@ -36,16 +35,6 @@ public enum ErrorCode {
     NOT_AUTHENTICATED_LOGIN(HttpStatus.FORBIDDEN, "권한에 맞지 않는 로그인입니다."),
     RESIGN_USER(HttpStatus.BAD_REQUEST, "탈퇴한 회원입니다."),
 
-    // kakao
-    KAKAO_COMMUNICATION_ERROR(HttpStatus.BAD_REQUEST, "카카오 API와의 통신에 실패했습니다."),
-    KAKAO_TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "카카오 액세스 토큰을 가져오는 데 실패했습니다."),
-    KAKAO_USER_INFO_ERROR(HttpStatus.BAD_REQUEST, "카카오 사용자 정보를 가져오는 데 실패했습니다."),
-
-    // google
-    GOOGLE_COMMUNICATION_ERROR(HttpStatus.BAD_REQUEST, "구글 API와의 통신에 실패했습니다."),
-    GOOGLE_TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "구글 액세스 토큰을 가져오는 데 실패했습니다."),
-    GOOGLE_USER_INFO_ERROR(HttpStatus.BAD_REQUEST, "구글 사용자 정보를 가져오는 데 실패했습니다."),
-
     // Admin
     NOT_AUTHORIZED_ADMIN(HttpStatus.FORBIDDEN, "관리자 권한이 필요합니다."),
 
@@ -58,9 +47,18 @@ public enum ErrorCode {
 
     // 추가된 에러 코드
     DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "중복된 Email 입니다."),
-    INVALID_ADMIN_TOKEN(HttpStatus.BAD_REQUEST, "관리자 암호가 틀려 등록이 불가능합니다.");
+    INVALID_ADMIN_TOKEN(HttpStatus.BAD_REQUEST, "관리자 암호가 틀려 등록이 불가능합니다."),
 
+    // 커뮤니티 기능 (게시글 및 댓글) 관련 오류
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 게시글을 찾을 수 없습니다."),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 댓글을 찾을 수 없습니다."),
+    POST_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 게시글에 대한 접근 권한이 없습니다."),
+    COMMENT_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 댓글에 대한 접근 권한이 없습니다."),
+    DUPLICATE_RECOMMENDATION(HttpStatus.BAD_REQUEST, "이미 추천한 게시글입니다."),
+    CANNOT_RECOMMEND_OWN_POST(HttpStatus.BAD_REQUEST, "자신의 게시글은 추천할 수 없습니다."),
+    INVALID_POST_DATA(HttpStatus.BAD_REQUEST, "유효하지 않은 게시글 데이터입니다."),
+    INVALID_COMMENT_DATA(HttpStatus.BAD_REQUEST, "유효하지 않은 댓글 데이터입니다.");
 
-    private HttpStatus httpStatus;
-    private String msg;
+    private final HttpStatus httpStatus;
+    private final String msg;
 }
