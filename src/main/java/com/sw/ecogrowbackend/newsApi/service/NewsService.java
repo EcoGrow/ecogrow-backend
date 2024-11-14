@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,16 +27,18 @@ public class NewsService {
     @Value("${naver.client.secret}")
     private String clientSecret;
 
-    public List<NewsResponseDto> searchNews(int start, int display) {
+    public Page<NewsResponseDto> searchNews(Pageable pageable) {
         String text;
         try {
-            text = URLEncoder.encode("환경", "UTF-8"); // 검색어 인코딩
+            text = URLEncoder.encode("환경", "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("검색어 인코딩 실패", e);
         }
 
-        String apiURL = "https://openapi.naver.com/v1/search/news?query=" + text
-            + "&start=" + start
+        int start = (int) pageable.getOffset() + 1;
+        int display = pageable.getPageSize();
+
+        String apiURL = "https://openapi.naver.com/v1/search/news?query=" + text + "&start=" + start
             + "&display=" + display;
 
         Map<String, String> requestHeaders = new HashMap<>();
@@ -41,7 +46,10 @@ public class NewsService {
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
 
         String responseBody = get(apiURL, requestHeaders);
-        return parseResponseToDto(responseBody);
+        List<NewsResponseDto> newsList = parseResponseToDto(responseBody);
+
+        long totalElements = 100;
+        return new PageImpl<>(newsList, pageable, totalElements);
     }
 
     private static String get(String apiUrl, Map<String, String> requestHeaders) {
