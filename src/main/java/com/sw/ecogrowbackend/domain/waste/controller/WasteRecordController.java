@@ -10,6 +10,7 @@ import com.sw.ecogrowbackend.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,7 @@ public class WasteRecordController {
 
     /**
      * 쓰레기 기록 단건 조회 API
+     *
      * @param recordId 기록 ID
      * @return 쓰레기 기록 목록 응답 데이터
      */
@@ -62,18 +64,17 @@ public class WasteRecordController {
 
     /**
      * 쓰레기 기록 전체 조회 API
+     *
      * @param pageable 페이지 정보
      * @return 쓰레기 기록 목록 응답 데이터
      */
     @GetMapping
-    public ResponseEntity<ApiResponse> getAllWasteRecords(
-        Pageable pageable) {
-        // 인증된 사용자의 ID를 이용하여 기록 조회
-        List<WasteRecordResponseDto> records = wasteRecordService.getAllWasteRecords(pageable).getContent();
+    public ResponseEntity<ApiResponse> getAllWasteRecords(Pageable pageable) {
+        Page<WasteRecordResponseDto> recordsPage = wasteRecordService.getAllWasteRecords(pageable);
         ApiResponse response = ApiResponse.builder()
             .msg(ResponseText.WASTE_RECORD_FETCH_SUCCESS.getMsg())
             .statuscode(String.valueOf(HttpStatus.OK.value()))
-            .data(records) // 조회된 기록 리스트를 응답 데이터에 포함
+            .data(recordsPage)
             .build();
         return ResponseEntity.ok(response);
     }
