@@ -32,7 +32,10 @@ public enum ResponseText {
     WASTE_RECORD_SUCCESS("쓰레기 기록 성공"),
     WASTE_RECORD_FETCH_SUCCESS("쓰레기 기록 조회 성공"),
     WASTE_RECORD_UPDATE_SUCCESS("쓰레기 기록 수정 성공"),
-    WASTE_RECORD_DELETE_SUCCESS("쓰레기 기록 삭제 성공");
+    WASTE_RECORD_DELETE_SUCCESS("쓰레기 기록 삭제 성공"),
+
+    // waste reduction tips
+    WASTE_REDUCTION_TIP_FETCH_SUCCESS("쓰레기 감소 팁 조회 성공");
 
     private String msg;
 
