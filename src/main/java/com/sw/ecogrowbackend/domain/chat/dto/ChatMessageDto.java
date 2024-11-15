@@ -8,7 +8,8 @@ public class ChatMessageDto {
     private String sender;
     private String content;
     private MessageType type;  // MessageType 필드
-
+    private Long senderId;
+    private Long recipientId;
     // 기본 생성자
     public ChatMessageDto() {
     }
