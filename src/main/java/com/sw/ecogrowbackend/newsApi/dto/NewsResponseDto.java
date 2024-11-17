@@ -1,51 +1,51 @@
 package com.sw.ecogrowbackend.newsApi.dto;
 
-import java.util.List;
+import lombok.Getter;
 
+@Getter
 public class NewsResponseDto {
 
-    private String title;     // 뉴스 제목
-    private String link;      // 뉴스 링크
-    private String description;  // 뉴스 요약
-    private String pubDate;   // 뉴스 발행 날짜
+    private final String title;        // 뉴스 제목
+    private final String link;         // 뉴스 링크
+    private final String description;  // 뉴스 요약
+    private final String pubDate;      // 뉴스 발행 날짜
 
-    // 생성자, getter, setter
-    public NewsResponseDto(String title, String link, String description, String pubDate) {
-        this.title = title;
-        this.link = link;
-        this.description = description;
-        this.pubDate = pubDate;
+    private NewsResponseDto(Builder builder) {
+        this.title = builder.title;
+        this.link = builder.link;
+        this.description = builder.description;
+        this.pubDate = builder.pubDate;
     }
 
-    public String getTitle() {
-        return title;
-    }
+    public static class Builder {
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+        private String title;
+        private String link;
+        private String description;
+        private String pubDate;
 
-    public String getLink() {
-        return link;
-    }
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
+        public Builder link(String link) {
+            this.link = link;
+            return this;
+        }
 
-    public String getDescription() {
-        return description;
-    }
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+        public Builder pubDate(String pubDate) {
+            this.pubDate = pubDate;
+            return this;
+        }
 
-    public String getPubDate() {
-        return pubDate;
-    }
-
-    public void setPubDate(String pubDate) {
-        this.pubDate = pubDate;
+        public NewsResponseDto build() {
+            return new NewsResponseDto(this);
+        }
     }
 }
