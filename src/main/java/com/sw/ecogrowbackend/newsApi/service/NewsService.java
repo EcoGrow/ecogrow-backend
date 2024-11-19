@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sw.ecogrowbackend.newsApi.dto.NewsResponseDto;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -14,8 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class NewsService {
 
     @Value("${naver.client.id}")
@@ -24,7 +24,7 @@ public class NewsService {
     @Value("${naver.client.secret}")
     private String clientSecret;
 
-    public List<NewsResponseDto> searchNews() {
+    public List<NewsResponseDto> searchNews(int start, int display) {
         String text;
         try {
             text = URLEncoder.encode("환경", "UTF-8"); // 검색어 인코딩
@@ -32,14 +32,15 @@ public class NewsService {
             throw new RuntimeException("검색어 인코딩 실패", e);
         }
 
-        String apiURL = "https://openapi.naver.com/v1/search/news?query=" + text; // JSON 결과
+        String apiURL = "https://openapi.naver.com/v1/search/news?query=" + text
+                + "&start=" + start
+                + "&display=" + display;
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
 
         String responseBody = get(apiURL, requestHeaders);
-
         return parseResponseToDto(responseBody);
     }
 
@@ -98,12 +99,12 @@ public class NewsService {
             JsonNode items = root.path("items");
 
             for (JsonNode item : items) {
-                String title = item.path("title").asText();
-                String link = item.path("link").asText();
-                String description = item.path("description").asText();
-                String pubDate = item.path("pubDate").asText();
-
-                NewsResponseDto newsDto = new NewsResponseDto(title, link, description, pubDate);
+                NewsResponseDto newsDto = new NewsResponseDto.Builder()
+                        .title(item.path("title").asText())
+                        .link(item.path("link").asText())
+                        .description(item.path("description").asText())
+                        .pubDate(item.path("pubDate").asText())
+                        .build();
                 newsList.add(newsDto);
             }
         } catch (IOException e) {

@@ -134,7 +134,7 @@ public class KakaoService {
         // 카카오 사용자 정보 요청 URL 생성
         URI uri = UriComponentsBuilder
             .fromUriString("https://kapi.kakao.com") // 카카오 API 서버 주소
-            .path("/v2/user/me") // 사용자 정보 요청 경로
+            .path("/v2/users/me") // 사용자 정보 요청 경로
             .encode()
             .build()
             .toUri();
