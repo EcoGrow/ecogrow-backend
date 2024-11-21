@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 @Service
 public class WeatherService {
@@ -38,7 +39,7 @@ public class WeatherService {
                 + "&ny=134";
 
         Document doc = null;
-        String temp = "-99";
+        String temp = "현재 기온을 가져올 수 없습니다.";
 
         try {
             doc = Jsoup.connect(url).get();
@@ -47,12 +48,12 @@ public class WeatherService {
         }
 
         // 기온 데이터 추출
-        Elements elements = doc.select("item");
+        Elements elements = Objects.requireNonNull(doc).select("item");
         for (Element e : elements) {
             if (e.select("category").text().equals("T1H")) {
-                temp = e.select("obsrValue").text();
+                temp = e.select("obsrValue").text() + "°C";
             }
         }
-        return temp + "°C";
+        return temp;
     }
 }
