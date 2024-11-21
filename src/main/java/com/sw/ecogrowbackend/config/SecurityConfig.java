@@ -71,7 +71,7 @@ public class SecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .requestMatchers("/api/users/signup", "/api/users/login", "/api/users/kakao/callback",
                     "/api/users/google/callback", "/api/waste/records",  "/api/waste/records/{recordId}",
-                    "/api/news/search").permitAll()
+                    "/api/news/search","/api/weather/temperature").permitAll()
                 .requestMatchers("/api/users/logout").authenticated()
                 .anyRequest().authenticated() // 그 외 요청은 인증 필요
         );
