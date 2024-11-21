@@ -27,7 +27,7 @@ public class NewsService {
     public List<NewsResponseDto> searchNews(int start, int display) {
         String text;
         try {
-            text = URLEncoder.encode("환경", "UTF-8"); // 검색어 인코딩
+            text = URLEncoder.encode("UNEP", "UTF-8"); // 검색어 인코딩
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("검색어 인코딩 실패", e);
         }
