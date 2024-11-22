@@ -19,8 +19,8 @@ public enum ResponseText {
     AUTH_LOGOUT_SUCCESS("로그아웃 성공"),
     AUTH_RESIGN_SUCCESS("회원탈퇴 성공"),
     AUTH_TOKEN_REISSUE_SUCCESS("토큰 재발급 성공"),
-    KAKAO_LOGIN_SUCCESS( "카카오 로그인 성공"),
-    GOOGLE_LOGIN_SUCCESS( "구글 로그인 성공"),
+    KAKAO_LOGIN_SUCCESS("카카오 로그인 성공"),
+    GOOGLE_LOGIN_SUCCESS("구글 로그인 성공"),
 
     // profile
     PROFILE_CREATE_SUCCESS("프로필 생성 성공"),
@@ -35,7 +35,12 @@ public enum ResponseText {
     WASTE_RECORD_DELETE_SUCCESS("쓰레기 기록 삭제 성공"),
 
     // waste reduction tips
-    WASTE_REDUCTION_TIP_FETCH_SUCCESS("쓰레기 감소 팁 조회 성공");
+    WASTE_REDUCTION_TIP_FETCH_SUCCESS("쓰레기 감소 팁 조회 성공"),
+
+    // zero-waste-product
+    PERSONALIZED_RECOMMENDATION_FETCH_SUCCESS("사용자 맞춤 추천 제품 조회 성공"),
+    ZERO_WASTE_CATALOG_FETCH_SUCCESS("제로웨이스트 제품 카탈로그 조회 성공"),
+    ALL_PRODUCTS_FETCH_SUCCESS("제로웨이스트 제품 모두 조회 성공");
 
     private String msg;
 

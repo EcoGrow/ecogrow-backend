@@ -11,8 +11,6 @@ import com.sw.ecogrowbackend.domain.waste.entity.WasteItem;
 import com.sw.ecogrowbackend.domain.waste.entity.WasteRecord;
 import com.sw.ecogrowbackend.domain.waste.entity.WasteTypeUtils;
 import com.sw.ecogrowbackend.domain.waste.repository.WasteRecordRepository;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,27 +49,25 @@ public class WasteRecordService {
         return new WasteRecordResponseDto(wasteRecord);
     }
 
-    // 쓰레기 기록 전체 조회
+    // QueryDSL을 사용하여 필터링된 전체 쓰레기 기록 조회
     @Transactional(readOnly = true)
-    public Page<WasteRecordResponseDto> getAllWasteRecords(Pageable pageable) {
-
-        Page<WasteRecord> wasteRecords = wasteRecordRepository.findAllByOrderByCreatedAtDesc(
-            pageable);
+    public Page<WasteRecordResponseDto> getAllWasteRecords(Long userId, String sortOption,
+        String startDate, String endDate, Pageable pageable) {
+        Page<WasteRecord> wasteRecords = wasteRecordRepository.findFilteredWasteRecords(userId,
+            sortOption, startDate, endDate, pageable);
         return wasteRecords.map(WasteRecordResponseDto::new);
     }
 
-    // 사용자별 쓰레기 기록 조회 메서드
+    // QueryDSL을 사용하여 특정 사용자의 필터링된 쓰레기 기록 조회
     @Transactional(readOnly = true)
-    public List<WasteRecordResponseDto> getWasteRecordsByUserId(Long userId) {
-
+    public Page<WasteRecordResponseDto> getWasteRecordsByUserId(Long userId, String sortOption,
+        String startDate, String endDate, Pageable pageable) {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        List<WasteRecord> wasteRecords = wasteRecordRepository.findAllByUser(user);
-
-        return wasteRecords.stream()
-            .map(WasteRecordResponseDto::fromEntity)
-            .collect(Collectors.toList());
+        Page<WasteRecord> wasteRecords = wasteRecordRepository.findFilteredWasteRecords(
+            user.getId(), sortOption, startDate, endDate, pageable);
+        return wasteRecords.map(WasteRecordResponseDto::new);
     }
 
     @Transactional

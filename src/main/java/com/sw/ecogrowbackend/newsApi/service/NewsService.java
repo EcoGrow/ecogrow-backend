@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,6 +35,8 @@ public class NewsService {
             throw new RuntimeException("검색어 인코딩 실패", e);
         }
 
+        int start = (int) pageable.getOffset() + 1;
+        int display = pageable.getPageSize();
         String apiURL = "https://openapi.naver.com/v1/search/news?query=" + text
                 + "&start=" + start
                 + "&display=" + display;
@@ -41,6 +46,10 @@ public class NewsService {
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
 
         String responseBody = get(apiURL, requestHeaders);
+        List<NewsResponseDto> newsList = parseResponseToDto(responseBody);
+
+        long totalElements = 100;
+        return new PageImpl<>(newsList, pageable, totalElements);
         return parseResponseToDto(responseBody);
     }
 
@@ -100,11 +109,11 @@ public class NewsService {
 
             for (JsonNode item : items) {
                 NewsResponseDto newsDto = new NewsResponseDto.Builder()
-                        .title(item.path("title").asText())
-                        .link(item.path("link").asText())
-                        .description(item.path("description").asText())
-                        .pubDate(item.path("pubDate").asText())
-                        .build();
+                    .title(item.path("title").asText())
+                    .link(item.path("link").asText())
+                    .description(item.path("description").asText())
+                    .pubDate(item.path("pubDate").asText())
+                    .build();
                 newsList.add(newsDto);
             }
         } catch (IOException e) {
