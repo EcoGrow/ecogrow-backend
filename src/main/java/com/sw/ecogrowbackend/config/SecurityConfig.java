@@ -66,11 +66,25 @@ public class SecurityConfig {
             sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
 
+        // 권한 설정
         http.authorizeHttpRequests(authorizeHttpRequests ->
             authorizeHttpRequests
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .requestMatchers("/api/users/signup", "/api/users/login", "/api/users/kakao/callback", "/api/users/google/callback", "/api/waste/records",  "/api/waste/records/{recordId}", "/api/news/search").permitAll()
-                .requestMatchers("/api/users/logout").authenticated()
+                .requestMatchers("/**").permitAll()
+                .requestMatchers(
+                    "/api/users/signup",
+                    "/api/users/login",
+                    "/api/users/kakao/callback",
+                    "/api/users/google/callback",
+                    "/api/waste/records",
+                    "/api/waste/records/{recordId}",
+                    "/api/news/search",
+                    "/api/users/**",
+                    "/api/chat/**",
+                    "/api/chat/rooms/**",// 모든 사용자에게 /api/chat 경로 허용
+                    "/ws/chat"       // WebSocket 엔드포인트도 허용
+                ).permitAll()
+            .requestMatchers("/api/users/logout").authenticated()
                 .anyRequest().authenticated() // 그 외 요청은 인증 필요
         );
 
@@ -79,7 +93,9 @@ public class SecurityConfig {
             exceptionHandling.accessDeniedHandler(accessDeniedHandler())
         );
 
+        // JWT 필터 추가
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
