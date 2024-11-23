@@ -1,7 +1,7 @@
 package com.sw.ecogrowbackend.domain.chat.entity;
 
 import com.sw.ecogrowbackend.domain.chat.MessageType;
-import com.sw.ecogrowbackend.domain.profile.entity.Profile;
+import com.sw.ecogrowbackend.domain.auth.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,11 +18,11 @@ public class ChatMessage {
 
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
-    private Profile sender;
+    private User sender;
 
     @ManyToOne
     @JoinColumn(name = "recipient_id", nullable = false)
-    private Profile recipient;
+    private User recipient;
 
     private String content;
 
@@ -32,7 +32,7 @@ public class ChatMessage {
     @Column(nullable = false)
     private MessageType type;
 
-    public ChatMessage(Profile sender, Profile recipient, String content, MessageType type) {
+    public ChatMessage(User sender, User recipient, String content, MessageType type) {
         this.sender = sender;
         this.recipient = recipient;
         this.content = content;
