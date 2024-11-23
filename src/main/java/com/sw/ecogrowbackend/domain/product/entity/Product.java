@@ -1,16 +1,12 @@
 package com.sw.ecogrowbackend.domain.product.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -22,18 +18,24 @@ public class Product {
     private Long id;
 
     private String name;
-
-    private String description;
-
     private String category;
-
     private double price;
-
     private String url;
+    private String image;
 
     @ManyToMany(mappedBy = "products")
     private List<RecommendationCategory> recommendationCategories = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserRecommendation> userRecommendations;
+    private List<UserRecommendation> userRecommendations = new ArrayList<>();
+
+    @Builder
+    public Product(String name, String category, double price, String url,
+        String image) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.url = url;
+        this.image = image;
+    }
 }
