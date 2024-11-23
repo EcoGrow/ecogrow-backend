@@ -73,7 +73,7 @@ public class SecurityConfig {
                     "/api/users/kakao/callback",
                     "/api/users/google/callback", "/api/waste/records",
                     "/api/waste/records/{recordId}",
-                    "/api/news/search", "/api/weather/temperature").permitAll()
+                    "/api/news/search", "/api/weather/temperature","/api/products/crawl").permitAll()
                 .requestMatchers("/api/users/logout").authenticated()
                 .anyRequest().authenticated() // 그 외 요청은 인증 필요
         );
