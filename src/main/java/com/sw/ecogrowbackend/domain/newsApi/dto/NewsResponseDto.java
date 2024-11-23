@@ -1,4 +1,4 @@
-package com.sw.ecogrowbackend.newsApi.dto;
+package com.sw.ecogrowbackend.domain.newsApi.dto;
 
 import lombok.Getter;
 

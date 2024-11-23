@@ -1,7 +1,7 @@
-package com.sw.ecogrowbackend.newsApi.controller;
+package com.sw.ecogrowbackend.domain.newsApi.controller;
 
-import com.sw.ecogrowbackend.newsApi.dto.NewsResponseDto;
-import com.sw.ecogrowbackend.newsApi.service.NewsService;
+import com.sw.ecogrowbackend.domain.newsApi.dto.NewsResponseDto;
+import com.sw.ecogrowbackend.domain.newsApi.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

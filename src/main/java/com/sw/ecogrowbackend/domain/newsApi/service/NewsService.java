@@ -1,8 +1,8 @@
-package com.sw.ecogrowbackend.newsApi.service;
+package com.sw.ecogrowbackend.domain.newsApi.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sw.ecogrowbackend.newsApi.dto.NewsResponseDto;
+import com.sw.ecogrowbackend.domain.newsApi.dto.NewsResponseDto;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.*;
