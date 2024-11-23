@@ -66,7 +66,6 @@ public class SecurityConfig {
             sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
 
-        // 권한 설정
         http.authorizeHttpRequests(authorizeHttpRequests ->
             authorizeHttpRequests
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
@@ -79,7 +78,8 @@ public class SecurityConfig {
                     "/api/waste/records",
                     "/api/waste/records/{recordId}",
                     "/api/news/search",
-                    "/api/users/**",
+                    "/api/weather/temperature",
+                    "/api/products/crawl",
                     "/api/chat/**",
                     "/api/chat/rooms/**",// 모든 사용자에게 /api/chat 경로 허용
                     "/ws/chat"       // WebSocket 엔드포인트도 허용
@@ -93,9 +93,7 @@ public class SecurityConfig {
             exceptionHandling.accessDeniedHandler(accessDeniedHandler())
         );
 
-        // JWT 필터 추가
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 

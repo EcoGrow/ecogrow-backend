@@ -1,0 +1,25 @@
+name: Run Test
+on:
+  push:
+    branches: [ develop, feat/*, fix/* ]
+  pull_request:
+    branches:
+      - develop
+jobs:
+  build:
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: java setup
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt' # See 'Supported distributions' for available options
+          java-version: '17'
+      - name: make executable gradlew
+        run: chmod +x ./gradlew
+        working-directory: ecogrow-backend
+      - name: run unittest
+        run: |
+          ./gradlew clean test
+        working-directory: ecogrow-backend

@@ -1,8 +1,8 @@
-package com.sw.ecogrowbackend.newsApi.service;
+package com.sw.ecogrowbackend.domain.newsApi.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sw.ecogrowbackend.newsApi.dto.NewsResponseDto;
+import com.sw.ecogrowbackend.domain.newsApi.dto.NewsResponseDto;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.*;
@@ -27,19 +27,19 @@ public class NewsService {
     @Value("${naver.client.secret}")
     private String clientSecret;
 
-    public List<NewsResponseDto> searchNews(int start, int display) {
+    public Page<NewsResponseDto> searchNews(Pageable pageable) {
         String text;
         try {
-            text = URLEncoder.encode("UNEP", "UTF-8"); // 검색어 인코딩
+            text = URLEncoder.encode("환경", "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("검색어 인코딩 실패", e);
         }
 
         int start = (int) pageable.getOffset() + 1;
         int display = pageable.getPageSize();
-        String apiURL = "https://openapi.naver.com/v1/search/news?query=" + text
-                + "&start=" + start
-                + "&display=" + display;
+
+        String apiURL = "https://openapi.naver.com/v1/search/news?query=" + text + "&start=" + start
+            + "&display=" + display;
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);
@@ -50,7 +50,6 @@ public class NewsService {
 
         long totalElements = 100;
         return new PageImpl<>(newsList, pageable, totalElements);
-        return parseResponseToDto(responseBody);
     }
 
     private static String get(String apiUrl, Map<String, String> requestHeaders) {
