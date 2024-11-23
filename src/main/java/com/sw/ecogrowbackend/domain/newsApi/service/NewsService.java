@@ -27,19 +27,19 @@ public class NewsService {
     @Value("${naver.client.secret}")
     private String clientSecret;
 
-    public Page<NewsResponseDto> searchNews(Pageable pageable) {
+    public List<NewsResponseDto> searchNews(int start, int display) {
         String text;
         try {
-            text = URLEncoder.encode("환경", "UTF-8");
+            text = URLEncoder.encode("UNEP", "UTF-8"); // 검색어 인코딩
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("검색어 인코딩 실패", e);
         }
 
         int start = (int) pageable.getOffset() + 1;
         int display = pageable.getPageSize();
-
-        String apiURL = "https://openapi.naver.com/v1/search/news?query=" + text + "&start=" + start
-            + "&display=" + display;
+        String apiURL = "https://openapi.naver.com/v1/search/news?query=" + text
+                + "&start=" + start
+                + "&display=" + display;
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);
@@ -50,6 +50,7 @@ public class NewsService {
 
         long totalElements = 100;
         return new PageImpl<>(newsList, pageable, totalElements);
+        return parseResponseToDto(responseBody);
     }
 
     private static String get(String apiUrl, Map<String, String> requestHeaders) {

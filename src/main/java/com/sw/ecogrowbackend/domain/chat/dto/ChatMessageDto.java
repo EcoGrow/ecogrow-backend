@@ -1,13 +1,23 @@
 package com.sw.ecogrowbackend.domain.chat.dto;
 
 import com.sw.ecogrowbackend.domain.chat.MessageType;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
 public class ChatMessageDto {
 
+    @Setter
     private Long userId;
+    @Setter
     private String sender;
+    @Setter
     private String content;
+    // 새롭게 추가된 setType 메서드
+    @Setter
     private MessageType type;  // MessageType 필드
+    private Long senderId;
+    private Long recipientId;
 
     // 기본 생성자
     public ChatMessageDto() {
@@ -18,41 +28,6 @@ public class ChatMessageDto {
         this.userId = userId;
         this.sender = sender;
         this.content = content;
-        this.type = type;
-    }
-
-    // Getter & Setter 메서드들
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public MessageType getType() {
-        return type;
-    }
-
-    // 새롭게 추가된 setType 메서드
-    public void setType(MessageType type) {
         this.type = type;
     }
 }
