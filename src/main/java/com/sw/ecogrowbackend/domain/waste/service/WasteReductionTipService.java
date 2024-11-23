@@ -31,7 +31,7 @@ public class WasteReductionTipService {
     private static final double GLASS_THRESHOLD = 3.0;
     private static final double GENERAL_WASTE_THRESHOLD = 15.0;
     private static final double METAL_THRESHOLD = 2.5;
-    private static final double ORGANIC_THRESHOLD = 8.0;
+    private static final double FOOD_THRESHOLD = 8.0;
     private static final double PAPER_THRESHOLD = 7.0;
     private static final double RECYCLABLE_PERCENTAGE_THRESHOLD = 30.0;
 
@@ -86,10 +86,10 @@ public class WasteReductionTipService {
                 WasteReductionTipMessage.METAL_REDUCTION_TIP.getMsg()));
         }
 
-        double organicAmount = getTotalWasteAmount(records, "organic");
-        if (organicAmount > ORGANIC_THRESHOLD) {
+        double foodAmount = getTotalWasteAmount(records, "food");
+        if (foodAmount > FOOD_THRESHOLD) {
             tips.add(new WasteReductionTipResponseDto(
-                WasteReductionTipMessage.ORGANIC_REDUCTION_TIP.getMsg()));
+                WasteReductionTipMessage.FOOD_REDUCTION_TIP.getMsg()));
         }
 
         double paperAmount = getTotalWasteAmount(records, "paper");
