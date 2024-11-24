@@ -15,10 +15,10 @@ jobs:
       db:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: ecogrow
-          MYSQL_USER: ecogrow_user
-          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: testroot
+          MYSQL_DATABASE: testdb
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testpassword
         ports:
           - 3306:3306
         options: >-
@@ -37,15 +37,15 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
+      - name: Wait for MySQL to be ready
+        run: sleep 30
+
       - name: Ensure gradlew is executable
         run: chmod +x ./gradlew
 
-      - name: Wait for MySQL to be ready
-        run: sleep 20
-
       - name: Run unit tests
         env:
-          SPRING_DATASOURCE_URL: ${{ secrets.DATABASE_URL }}
-          SPRING_DATASOURCE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/testdb
+          SPRING_DATASOURCE_USERNAME: testuser
+          SPRING_DATASOURCE_PASSWORD: testpassword
         run: ./gradlew clean test
