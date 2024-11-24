@@ -1,6 +1,7 @@
 package com.sw.ecogrowbackend.domain.chat.service;
 
 import com.sw.ecogrowbackend.domain.chat.MessageType;
+import com.sw.ecogrowbackend.domain.chat.dto.ChatMessageDto;
 import com.sw.ecogrowbackend.domain.chat.entity.ChatMessage;
 import com.sw.ecogrowbackend.domain.chat.entity.ChatRoom;
 import com.sw.ecogrowbackend.domain.chat.repository.ChatMessageRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -21,7 +23,6 @@ public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
 
-    // 유저 간의 1:1 채팅방에서 메시지 보내기
     public ChatMessage sendMessage(Long senderId, Long recipientId, String content) {
         User sender = userRepository.findById(senderId)
             .orElseThrow(() -> new IllegalArgumentException("Sender not found"));
@@ -35,19 +36,18 @@ public class ChatService {
         return chatMessageRepository.save(chatMessage);
     }
 
-    // 두 유저 간의 메시지 기록 조회
-    public List<ChatMessage> getChatMessages(Long userId1, Long userId2) {
-        return chatMessageRepository.findMessagesBetweenUsers(userId1, userId2);
+    public List<ChatMessageDto> getChatMessages(Long userId1, Long userId2) {
+        return chatMessageRepository.findMessagesBetweenUsers(userId1, userId2).stream()
+            .map(this::convertToDto)
+            .collect(Collectors.toList());
     }
 
-    // 유저가 속해 있는 채팅방 조회
     public Set<ChatRoom> getUserChatRooms(Long userId) {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("User not found"));
         return chatRoomRepository.findAllByMembersContaining(user);
     }
 
-    // 이메일을 통해 새로운 채팅방 생성
     public ChatRoom createChatRoomByEmail(Long userId, String recipientEmail) {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -60,5 +60,16 @@ public class ChatService {
     private ChatRoom createChatRoom(User user, User recipient) {
         ChatRoom newRoom = new ChatRoom(Set.of(user, recipient));
         return chatRoomRepository.save(newRoom);
+    }
+
+    private ChatMessageDto convertToDto(ChatMessage chatMessage) {
+        return new ChatMessageDto(
+            chatMessage.getSender().getId(),
+            chatMessage.getSender().getUsername(),
+            chatMessage.getContent(),
+            chatMessage.getType(),
+            chatMessage.getSender().getId(),
+            chatMessage.getRecipient().getId()
+        );
     }
 }
