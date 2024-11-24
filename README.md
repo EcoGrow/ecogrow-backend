@@ -48,10 +48,7 @@ https://docs.google.com/document/d/1TwYGpixl2F0x2VR9XR31Se2Bs0SiQ6iTBjHi4AA-Hdw/
 
 ## 🖥 ERD 다이어그램 
 
-![image](https://github.com/user-attachments/assets/53d4fc81-c318-48c8-a501-0876cfe472b2)
-
-
-
+![image](https://github.com/user-attachments/assets/d26e4a92-a5fa-4a99-9dd2-de1da0246f0e)
 
 <br>
 
