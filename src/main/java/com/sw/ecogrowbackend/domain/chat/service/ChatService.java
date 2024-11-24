@@ -69,7 +69,8 @@ public class ChatService {
             chatMessage.getContent(),
             chatMessage.getType(),
             chatMessage.getSender().getId(),
-            chatMessage.getRecipient().getId()
+            chatMessage.getRecipient().getId(),
+            chatMessage.getTimestamp()
         );
     }
 }
