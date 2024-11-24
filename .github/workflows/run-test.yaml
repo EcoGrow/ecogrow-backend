@@ -37,6 +37,9 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
+      - name: Ensure gradlew is executable
+        run: chmod +x ./gradlew
+
       - name: Wait for MySQL to be ready
         run: sleep 20
 
