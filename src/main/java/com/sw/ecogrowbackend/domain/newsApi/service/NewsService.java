@@ -30,7 +30,7 @@ public class NewsService {
     public Page<NewsResponseDto> searchNews(Pageable pageable) {
         String text;
         try {
-            text = URLEncoder.encode("환경", "UTF-8");
+            text = URLEncoder.encode("UNEP", "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("검색어 인코딩 실패", e);
         }
