@@ -38,7 +38,7 @@ jobs:
           java-version: '17'
 
       - name: Wait for MySQL to be ready
-        run: sleep 30
+        run: sleep 60
 
       - name: Ensure gradlew is executable
         run: chmod +x ./gradlew
@@ -48,4 +48,5 @@ jobs:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/testdb
           SPRING_DATASOURCE_USERNAME: testuser
           SPRING_DATASOURCE_PASSWORD: testpassword
+          SPRING_PROFILES_ACTIVE: test
         run: ./gradlew clean test
