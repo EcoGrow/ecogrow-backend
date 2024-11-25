@@ -42,7 +42,7 @@ https://docs.google.com/document/d/1TwYGpixl2F0x2VR9XR31Se2Bs0SiQ6iTBjHi4AA-Hdw/
 
 ## 🗂️ APIs
 
-- 추후 추가 예정
+https://east-bacon-c1a.notion.site/148f8bbc8b2280318907cacfed82c9ba?v=148f8bbc8b2281dd8449000cfbd41051&pvs=4
 
 <br />
 
