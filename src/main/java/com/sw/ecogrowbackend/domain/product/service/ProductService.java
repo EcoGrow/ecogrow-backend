@@ -64,24 +64,14 @@ public class ProductService {
 
             String image = element.select("a.shop-item-thumb img._org_img").attr("abs:src");
             String url = element.select("a.shop-item-thumb").attr("abs:href");
-            String priceText = element.select("p.pay").text().trim();
+            String priceText = element.select("p.pay").first().text();
             double price = 0.0;
             try {
                 if (!priceText.isEmpty()) {
-                    // 중복 숫자 제거 및 숫자만 추출
-                    String sanitizedPriceText = priceText.replaceAll("[^0-9.]", "");
-                    if (sanitizedPriceText.length() > 0) {
-                        // 중복 제거 및 잘못된 값 필터링
-                        sanitizedPriceText = sanitizedPriceText.replaceAll("(\\d+)\\1", "$1");
-                        price = Double.parseDouble(sanitizedPriceText);
-                    }
+                    price = Double.parseDouble(priceText.replaceAll("[^0-9]", ""));
                 }
             } catch (NumberFormatException e) {
-                price = 0.0; // 오류 발생 시 기본값 설정
-            }
-            // Validate Price
-            if (price <= 0 || price > 1_000_000) {
-                price = 0.0; // 범위를 벗어나면 기본값 설정
+                price = 0.0;
             }
 
             Product product = Product.builder()

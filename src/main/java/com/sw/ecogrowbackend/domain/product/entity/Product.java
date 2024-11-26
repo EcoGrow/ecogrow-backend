@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity
@@ -23,11 +22,11 @@ public class Product {
     private String url;
     private String image;
 
-    @ManyToMany(mappedBy = "products")
-    private List<RecommendationCategory> recommendationCategories = new ArrayList<>();
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserRecommendation> userRecommendations = new ArrayList<>();
+//    @ManyToMany(mappedBy = "products")
+//    private List<RecommendationCategory> recommendationCategories = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<UserRecommendation> userRecommendations = new ArrayList<>();
 
     @Builder
     public Product(String name, String category, double price, String url,
