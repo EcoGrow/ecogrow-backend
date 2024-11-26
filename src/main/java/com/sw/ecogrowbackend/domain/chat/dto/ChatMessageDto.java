@@ -9,14 +9,16 @@ public class ChatMessageDto {
     private final MessageType type;
     private final Long senderId;
     private final Long recipientId;
+    private final Long timestamp;
 
-    public ChatMessageDto(Long userId, String sender, String content, MessageType type, Long senderId, Long recipientId) {
+    public ChatMessageDto(Long userId, String sender, String content, MessageType type, Long senderId, Long recipientId, Long timestamp) {
         this.userId = userId;
         this.sender = sender;
         this.content = content;
         this.type = type;
         this.senderId = senderId;
         this.recipientId = recipientId;
+        this.timestamp = timestamp;
     }
 
     public Long getUserId() {
@@ -39,7 +41,7 @@ public class ChatMessageDto {
         return senderId;
     }
 
-    public Long getRecipientId() {
-        return recipientId;
-    }
+    public Long getRecipientId() { return recipientId; }
+
+    public Long getTimestamp() { return timestamp; }
 }
