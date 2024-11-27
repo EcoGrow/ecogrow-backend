@@ -21,7 +21,7 @@
 
 |리더|팀원|팀원|
 |:---:|:---:|:---:|
-|![file](https://github.com/user-attachments/assets/ee9604ee-9f3a-4075-a047-5f7857ebc60b)|![file (2)](https://github.com/user-attachments/assets/4d1fe5a2-611f-4e64-87d2-853673326fe8)||![file (1)](https://github.com/user-attachments/assets/4d1fe5a2-611f-4e64-87d2-853673326fe8)|
+|![file](https://github.com/user-attachments/assets/ee9604ee-9f3a-4075-a047-5f7857ebc60b)|![file (2)](https://github.com/user-attachments/assets/8b721147-1141-44b5-9581-04bea7879249)|![file (3)](https://github.com/user-attachments/assets/c5082eab-0114-418e-946e-60159c73c1c7)|
 |[김경민]((https://github.com/gminnimk))|[서찬영]()|[석연걸]()|
 
 <br />
@@ -29,7 +29,7 @@
 ## 🧑‍💻 팀 역할
 | 역할 | 김경민| 서찬영 | 석연걸 |
 |:---:|:---:|:---:|:---:|
-| 담당 기능 | <ul><li>사용자 인증</li><li>소셜 로그인(Kakao, Google)</li><li>관리자 기능</li><li>쓰레기 기록 CRUD</li><li>맞춤형 쓰레기 감소 TIP</li><li>제로웨이스트 제품 추천 기능</li><li>Front</li><li>AOP</li><li>배포</li>|<ul><li>회원가입 & 로그인 페이지</li><li>프로필</li><li>커뮤니티 기능<li></li>뉴스 API</li><li>실시간 채팅</li> |<ul><li>2D 이스터에그 게임</li><li>3D 분리수거 게임</li><li>Front</li>|
+| 담당 기능 | <ul><li>인증/인가(JWT)</li><li>소셜 로그인(Kakao, Google)</li><li>관리자 기능</li><li>쓰레기 기록 CRUD</li><li>맞춤형 쓰레기 감소 TIP</li><li>제로웨이스트 제품 추천 기능</li><li>Front</li><li>AOP</li><li>배포</li>|<ul><li>회원가입 & 로그인 페이지</li><li>프로필</li><li>커뮤니티 기능<li></li>뉴스 API</li><li>실시간 채팅</li> |<ul><li>2D 이스터에그 게임</li><li>3D 분리수거 게임</li><li>Front</li>|
 
 <br>
 
@@ -108,7 +108,7 @@ https://east-bacon-c1a.notion.site/148f8bbc8b2280318907cacfed82c9ba?v=148f8bbc8b
 
 ## 🛠️ 프로젝트 아키텍쳐
 
-- 추후 추가 예정
+![image](https://github.com/user-attachments/assets/b6d4cb3d-0f80-400a-86ac-b3ec5a6dac06)
   
 <br>
 
@@ -123,7 +123,33 @@ https://youtu.be/sOdrZyGFin0
 
 ## 🗣️기술적 의사결정
 
-- 추후 추가 예정
+<details>
+  <summary>📢 DataBase : MySQL</summary>
+<br>
+
+- 관계를 맺고 있는 데이터가 자주 수정되는 경우, MySQL의 관계형 데이터 모델과 트랜잭션 관리 기능은 데이터의 무결성과 일관성을 보장하는 데 유리합니다.
+
+- 저희 프로젝트는 기획 당시 사용자 권한, 쓰레기 기록 하나에 세부 쓰레기 내역, 감소 팁 등 연관된 관계가 많다고 예상되어 복잡한 쿼리를 효율적으로 처리하기 유리한 MySQL 를 선택하게 되었습니다
+
+
+<br>
+</details>
+
+
+<details>
+  <summary>📢 Front : React</summary>
+<br>
+
+
+- React의 컴포넌트 기반 구조는 UI를 작은 재사용 가능한 조각으로 분리하여 개발과 유지보수를 용이하게 만들어 재사용성과 가독성이 높은 코드작성이 가능합니다.
+
+- 저희 프로젝트는 차트(Chart.js), 모달 등 시각적 UI를 위주로 하기 때문에 풍부한 라이브러리와 도구 지원을 제공하는 React를 선택하게 되었습니다.
+
+<br>
+</details>
+
+
+
 
 <br>
 
@@ -213,3 +239,30 @@ private List<WasteItem> wasteItems = new ArrayList<>();
 
 <br>
 
+
+
+
+
+<details>
+  <summary>📢 특정 페이지 조회 시 Hibernate 무한 루프 아슈</summary>
+<br>
+
+- 프론트에서 쓰레기 기록 메인 페이지 조회 시 서버 콘솔에서 Hibernate 무한 루프 발생
+
+
+➡️ 오류 내용 
+
+
+
+➡️ 원인 :
+
+- 종속성 배열에 'fetchAllRecords'를 포함하면 구성요소가 다시 렌더링될 때마다 'useEffect'가 다시 트리거되어 지속적인 API 호출 루프가 발생
+
+
+
+➡️ 해결 방법 :
+
+- 'fetchAllRecords'를 한 번만 호출하도록 'useEffect'를 조정하고 'fetchData'를 'currentPage'에만 종속되게 수정
+
+<br>
+</details>
