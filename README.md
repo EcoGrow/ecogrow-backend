@@ -11,7 +11,7 @@
 ## 📝 프로젝트 소개
 
 - 한림대학교 Software Capston Design
-- 프로젝트명 : Eco Grow
+- 프로젝트명 : EcoGrow
 - 내용 : 버리는 쓰레기를 시각화하고 사용자에게 맞춤형 쓰레기 감소 팁을 제공하며 제로웨이스트 제품을 추천하는 서비스
 
 <br>
@@ -22,21 +22,22 @@
 |리더|팀원|팀원|
 |:---:|:---:|:---:|
 |![file](https://github.com/user-attachments/assets/ee9604ee-9f3a-4075-a047-5f7857ebc60b)|![file (2)](https://github.com/user-attachments/assets/8b721147-1141-44b5-9581-04bea7879249)|![file (3)](https://github.com/user-attachments/assets/c5082eab-0114-418e-946e-60159c73c1c7)|
-|[김경민]((https://github.com/gminnimk))|[서찬영]()|[석연걸]()|
+|[김경민](https://github.com/gminnimk)|[서찬영](https://github.com/scy2000-lab)|[석연걸](https://github.com/SeokYeongeol)|
 
 <br />
 
 ## 🧑‍💻 팀 역할
 | 역할 | 김경민| 서찬영 | 석연걸 |
 |:---:|:---:|:---:|:---:|
-| 담당 기능 | <ul><li>인증/인가(JWT)</li><li>소셜 로그인(Kakao, Google)</li><li>관리자 기능</li><li>쓰레기 기록 CRUD</li><li>맞춤형 쓰레기 감소 TIP</li><li>제로웨이스트 제품 추천 기능</li><li>Front</li><li>AOP</li><li>배포</li>|<ul><li>회원가입 & 로그인 페이지</li><li>프로필</li><li>커뮤니티 기능<li></li>뉴스 API</li><li>실시간 채팅</li> |<ul><li>2D 이스터에그 게임</li><li>3D 분리수거 게임</li><li>Front</li>|
+| 담당 기능 | <ul><li>인증/인가(JWT)</li><li>소셜 로그인(Kakao, Google)</li><li>관리자 기능</li><li>쓰레기 기록 CRUD</li><li>맞춤형 쓰레기 감소 TIP</li><li>제로웨이스트 제품 추천 기능</li><li>Front</li>|<ul><li>회원가입 & 로그인 페이지</li><li>프로필</li><li>뉴스 API</li><li>실시간 채팅</li>|<ul><li>2D 이스터에그 게임</li><li>3D 분리수거 게임</li><li>기상청 API</li><li>Front</li>|
 
 <br>
 
 
-## 📜 임시 최종 기획안 및 진행 사항
+## 🛠️ 프로젝트 아키텍쳐
 
-https://docs.google.com/document/d/1TwYGpixl2F0x2VR9XR31Se2Bs0SiQ6iTBjHi4AA-Hdw/edit?usp=sharing
+![image](https://github.com/user-attachments/assets/b6d4cb3d-0f80-400a-86ac-b3ec5a6dac06)
+
 
 <br>
 
@@ -64,11 +65,12 @@ https://east-bacon-c1a.notion.site/148f8bbc8b2280318907cacfed82c9ba?v=148f8bbc8b
 <img src="https://github.com/yewon-Noh/readme-template/blob/main/skills/Mysql.png?raw=true" width="80">
 <img src="https://github.com/yewon-Noh/readme-template/blob/main/skills/JWT.png?raw=true" width="80">
 <img src="https://github.com/yewon-Noh/readme-template/blob/main/skills/Qeurydsl.png?raw=true" width="80">
+<img src="https://github.com/user-attachments/assets/7f8362fa-62b1-43d1-aea5-e048301d779c" width="80">
 </div>
 
 - JDK 17.0.11
 - Dependencies
-  - Spring Boot: data-jpa, data-jdbc, security, 유효성 검사, 웹, 테스트, devtools, oauth2-client(기본 버전)
+  - Spring Boot: data-jpa, data-jdbc, security, 유효성 검사, 웹, 테스트, devtools, oauth2-client(기본 버전), websocket, redis, cache, devtools
   - Lombok: compileOnly, AnnotationProcessor(기본 버전)
   - MySQL 커넥터: RuntimeOnly(기본 버전)
   - JWT: jjwt-api, jjwt-impl, jjwt-jackson(0.11.5)
@@ -76,6 +78,8 @@ https://east-bacon-c1a.notion.site/148f8bbc8b2280318907cacfed82c9ba?v=148f8bbc8b
   - Jakarta : Annotation-api, persistence-api(기본 버전)
   - MapStruct: mapstruct(1.5.5.Final), mapstruct-processor(1.5.5.Final)
   - JUnit: junit-platform-launcher(기본 버전)
+  - Jsoup 1.13.1
+  - session-data-redis 3.1.0
 
 <br>
 
@@ -83,6 +87,8 @@ https://east-bacon-c1a.notion.site/148f8bbc8b2280318907cacfed82c9ba?v=148f8bbc8b
 <div>
 <img src="https://github.com/yewon-Noh/readme-template/blob/main/skills/React.png?raw=true?raw=true" width="80">
 <img src="https://github.com/yewon-Noh/readme-template/blob/main/skills/JavaScript.png?raw=true" width="80">
+<img src="https://github.com/user-attachments/assets/7a3ce146-76cb-41c8-9a57-9ef24c369e04" width="80">
+
 </div>
 
 <br>
@@ -92,6 +98,7 @@ https://east-bacon-c1a.notion.site/148f8bbc8b2280318907cacfed82c9ba?v=148f8bbc8b
 <div>
 <img src="https://github.com/yewon-Noh/readme-template/blob/main/skills/Docker.png?raw=true" width="80">
 <img src="https://github.com/yewon-Noh/readme-template/blob/main/skills/AWSEC2.png?raw=true" width="80">
+<img src="https://github.com/user-attachments/assets/86b95fde-3bd2-429e-9297-0b8e12a764a1" width="80">
 </div>
 
 <br>
@@ -104,27 +111,30 @@ https://east-bacon-c1a.notion.site/148f8bbc8b2280318907cacfed82c9ba?v=148f8bbc8b
 </div>
           
 <br>
-
-
-## 🛠️ 프로젝트 아키텍쳐
-
-![image](https://github.com/user-attachments/assets/b6d4cb3d-0f80-400a-86ac-b3ec5a6dac06)
   
 <br>
 
 
 ## 📄 시연 영상
 
-- 24년 11월 10일 기준 중간 시연 영상입니다.
+https://youtu.be/-pMsN_q1SQI
 
-https://youtu.be/sOdrZyGFin0
+<br>
+
+
+## 📄 발표 PPT
+
+https://drive.google.com/file/d/1psZjJKXSQLjjCthlXXW2jidrHAc3shOY/view
+
+![image](https://github.com/user-attachments/assets/7058ff89-7d1e-4267-8529-961f09bf3652)
+
 
 <br>
 
 ## 🗣️기술적 의사결정
 
 <details>
-  <summary>📢 DataBase : MySQL</summary>
+  <summary>DataBase : MySQL</summary>
 <br>
 
 - 관계를 맺고 있는 데이터가 자주 수정되는 경우, MySQL의 관계형 데이터 모델과 트랜잭션 관리 기능은 데이터의 무결성과 일관성을 보장하는 데 유리합니다.
@@ -137,7 +147,7 @@ https://youtu.be/sOdrZyGFin0
 
 
 <details>
-  <summary>📢 Front : React</summary>
+  <summary>Front : React</summary>
 <br>
 
 
@@ -233,25 +243,16 @@ private List<WasteItem> wasteItems = new ArrayList<>();
 에 유지하고 사용자별 기록을 '/api/waste/record/user/{userId}로 최신화 하는 것이 좋음
 
 <br>
-
-  <details>
- </details>
-
-<br>
-
-
-
-
+</details>
 
 <details>
-  <summary>📢 특정 페이지 조회 시 Hibernate 무한 루프 아슈</summary>
+  <summary>특정 페이지 조회 시 Hibernate 무한 루프 아슈</summary>
 <br>
-
-- 프론트에서 쓰레기 기록 메인 페이지 조회 시 서버 콘솔에서 Hibernate 무한 루프 발생
-
+📢 프론트에서 쓰레기 기록 메인 페이지 조회 시 서버 콘솔에서 Hibernate 무한 루프 발생
 
 ➡️ 오류 내용 
 
+Hibernate: select p1_0.id, p1_0.bio, p1_0.created_at, p1_0.modified_at, p1_0.profile_image_url, u1_0.id, u1_0.approval_status, u1_0.created_at, u1_0.email, u1_0.google_id, u1_0.kakao_id, u1_0.modified_at, u1_0.password, u1_0.resigned_at, u1_0.role, u1_0.username from profiles p1_0 left join users u1_0 on u1_0.id=p1_0.user_id where p1_0.user_id=? Hibernate: / select count(wasteRecord) from WasteRecord wasteRecord / select count(wr1_0.id) from waste_records wr1_0 Hibernate: / select count(wasteRecord) from WasteRecord wasteRecord / select count(wr1_0.id) from waste_records wr1_0 Hibernate: / select wasteRecord from WasteRecord wasteRecord order by wasteRecord.createdAt desc / select wr1_0.id, wr1_0.created_at, wr1_0.modified_at, wr1_0.user_id from waste_records wr1_0 order by wr1_0.created_at desc limit ?, ? Hibernate: / select wasteRecord from WasteRecord wasteRecord order by wasteRecord.createdAt desc / select wr1_0.id, wr1_0.created_at, wr1_0.modified_at,
 
 
 ➡️ 원인 :
