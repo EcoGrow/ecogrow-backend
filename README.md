@@ -171,6 +171,11 @@ https://drive.google.com/file/d/1psZjJKXSQLjjCthlXXW2jidrHAc3shOY/view
 
 ## 🤔 Trouble Shoothing
 
+**JPA N+1 문제 단계별 해결 및 조회 API 성능 최적화 & 인덱스 적용 쿼리 성능 최적화** <br>
+https://east-bacon-c1a.notion.site/EcoGrow-BE-24cf8bbc8b2280c98b82da55dca68c95?source=copy_link
+
+
+<br>
 <details>
   <summary>양방향 참조 문제</summary>
 
