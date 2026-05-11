@@ -10,7 +10,7 @@
 
 ## 프로젝트 소개
 
-- 한림대학교 Software Capston Design
+- Software Capston Design
 - 프로젝트명 : EcoGrow
 - 내용 : 버리는 쓰레기를 시각화하고 사용자에게 맞춤형 쓰레기 감소 팁을 제공하며 제로웨이스트 제품을 추천하는 서비스
 
