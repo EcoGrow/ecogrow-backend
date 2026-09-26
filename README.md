@@ -23,12 +23,13 @@
 |:---:|:---:|:---:|
 |[김경민](https://github.com/gminnimk)|[서찬영](https://github.com/scy2000-lab)|[석연걸](https://github.com/SeokYeongeol)|
 
-<br />
+<br>
 
 ## 팀 역할
-| 역할 | 김경민| 서찬영 | 석연걸 |
-|:---:|:---:|:---:|:---:|
-| 담당 기능 | <ul><li>인증/인가(JWT)</li><li>소셜 로그인(Kakao, Google)</li><li>관리자 기능</li><li>쓰레기 기록 CRUD</li><li>맞춤형 쓰레기 감소 TIP</li><li>제로웨이스트 제품 추천 기능</li><li>Front</li>|<ul><li>회원가입 & 로그인 페이지</li><li>프로필</li><li>뉴스 API</li><li>실시간 채팅</li>|<ul><li>2D 이스터에그 게임</li><li>3D 분리수거 게임</li><li>기상청 API</li><li>Front</li>|
+
+| 역할 | 김경민 | 서찬영 | 석연걸 |
+| :---: | :---: | :---: | :---: |
+| **담당 기능** | • 인증/인가(JWT)<br>• 소셜 로그인(Kakao, Google)<br>• 관리자 기능<br>• 쓰레기 기록 CRUD<br>• 맞춤형 쓰레기 감소 TIP<br>• 제로웨이스트 제품 추천 기능<br>• Front | • 회원가입 & 로그인 페이지<br>• 프로필<br>• 뉴스 API<br>• 실시간 채팅 | • 2D 이스터에그 게임<br>• 3D 분리수거 게임<br>• 기상청 API<br>• Front |
 
 <br>
 
@@ -37,14 +38,13 @@
 
 ![image](https://github.com/user-attachments/assets/b6d4cb3d-0f80-400a-86ac-b3ec5a6dac06)
 
-
 <br>
 
 ## APIs
 
 [Notion API 명세서 바로가기](https://east-bacon-c1a.notion.site/148f8bbc8b2280318907cacfed82c9ba?v=148f8bbc8b2281dd8449000cfbd41051&pvs=4)
 
-<br />
+<br>
 
 ## ERD 다이어그램 
 
@@ -113,10 +113,7 @@
 <img src="https://github.com/yewon-Noh/readme-template/blob/main/skills/Postman.png?raw=true" width="80">
 </div>
           
-<br>
-  
-<br>
-
+<br><br>
 
 ## 성능 최적화
 
@@ -148,6 +145,8 @@
         - **영속성 컨텍스트 부하 제거**: 엔티티를 거치지 않아 영속성 컨텍스트의 스냅샷 생성 및 변경 감지 오버헤드를 원천적으로 제거
         - **N+1 문제 구조적 차단**: DTO Projection 기반 조회로 엔티티 연관관계 접근을 제거하여 N+1 문제가 재발할 수 없는 구조로 전환
 
+<br>
+
 **4. 정량적 성과 (nGrinder 부하 테스트 결과)**
 
 **기존 쿼리 발생 5000 이상 ⇒ 11 ⇒ 1 으로 최적화**
@@ -160,21 +159,21 @@
 | **Executed Tests (총 처리 건수)** | 60 | 7,525 | **+12,442%** |
 
 
-#### [기존]
-<img width="2048" height="608" alt="image" src="https://github.com/user-attachments/assets/308ee67e-a4aa-4f04-9986-be1421ac16a5" />
+#### [ 기존 ]
+  <img width="2048" height="608" alt="image" src="https://github.com/user-attachments/assets/308ee67e-a4aa-4f04-9986-be1421ac16a5" />
 
 
-#### [Fetch Join과 Batch Size를 이용한 N+1 완화]
-<img width="2048" height="637" alt="image" src="https://github.com/user-attachments/assets/27fde65c-5241-486c-8985-20efa2723f7c" />
+#### [ Fetch Join과 Batch Size를 이용한 N+1 완화 ]
+  <img width="2048" height="637" alt="image" src="https://github.com/user-attachments/assets/27fde65c-5241-486c-8985-20efa2723f7c" />
 
 
-#### [QueryDSL DTO 프로젝션 적용]
-<img width="2048" height="619" alt="image" src="https://github.com/user-attachments/assets/71636dc9-5d85-4f16-b773-8bdd6db9ecd5" />
+#### [ QueryDSL DTO 프로젝션 적용 ]
+  <img width="2048" height="619" alt="image" src="https://github.com/user-attachments/assets/71636dc9-5d85-4f16-b773-8bdd6db9ecd5" />
 
 
-<br>
+<br><br>
 
-**[단계별 개선 요약]**
+**[ 단계별 개선 요약 ]**
 기존 ⇒ **Fetch Join과 Batch Size를 이용한 N+1 완화 ⇒ DTO 프로젝션 적용**
 - **TPS**: 1.3 ⇒ 4.1 ⇒ **129.5**
 - **Peak TPS**: 5.0 ⇒ 6.0 ⇒ **142.5**
@@ -183,14 +182,16 @@
 
 <br>
 
-### 2. 인덱스 적용 (Index Application)
+### 2. 인덱스 적용
 
 **1. 배경**
 - 폐기물 기록 리스트 조회 API에서 **생성일(created_at)을 기준으로 범위 조회 및 정렬**하는 요청이 빈번히 발생.
 - 특정 기간(예: 일주일, 한 달 단위) 단위로 조회 시 **쿼리 실행 시간이 지연**되고 대량 요청 시 성능 저하 문제가 발생함을 확인.
 - EXPLAIN 실행 결과 해당 쿼리가 **풀 테이블 스캔(Full Table Scan)**으로 동작하고 있음을 확인.
     
-<img width="1442" height="146" alt="image" src="https://github.com/user-attachments/assets/9de0880d-fd3c-43dd-864c-88fa4ae2ef72" />
+  <img width="1442" height="146" alt="image" src="https://github.com/user-attachments/assets/9de0880d-fd3c-43dd-864c-88fa4ae2ef72" />
+
+<br>
 
 **2. 원인 분석**
 - `created_at` 컬럼에 적절한 인덱스가 없어 범위 검색 및 정렬 시 모든 레코드를 스캔해야 했음.
@@ -199,9 +200,9 @@
 **3. 해결 과정 및 기술적 결정**
 - **1단계: 인덱스 생성**
     - `created_at` 컬럼에 단일 인덱스를 생성하여 범위 검색과 정렬 시 인덱스를 활용할 수 있도록 조치.
-    ```sql
-    CREATE INDEX idx_created ON waste_records (created_at);
-    ```
+      ```sql
+      CREATE INDEX idx_created ON waste_records (created_at);
+      ```
 
 - **2단계: 인덱스 활용 검증 (EXPLAIN, Profiling)**
     - EXPLAIN 실행 결과, 풀 테이블 스캔 → 인덱스 레인지 스캔으로 전환됨을 확인.
@@ -211,18 +212,20 @@
         WHERE created_at BETWEEN '2024-10-10 00:00:00' AND '2024-10-12 23:59:59'
         ORDER BY created_at ASC;
         ```
-    <img width="1448" height="140" alt="image" src="https://github.com/user-attachments/assets/81472448-894c-4d30-9517-6506ebe5716e" />
-
+      <img width="1448" height="140" alt="image" src="https://github.com/user-attachments/assets/81472448-894c-4d30-9517-6506ebe5716e" />
+      <br>
         
     - MySQL Profiling을 통해 인덱스 적용 전, 후 실제 쿼리 실행 시간 비교:
     - **0.048816s → 0.002947s (약 94% 성능 개선)**
             
-    <img width="770" height="748" alt="image" src="https://github.com/user-attachments/assets/fa51da17-b9fa-4cea-aa3c-8d09ba37b011" />
-
+      <img width="770" height="748" alt="image" src="https://github.com/user-attachments/assets/fa51da17-b9fa-4cea-aa3c-8d09ba37b011" />
+      <br>
 
 - **3단계: 대량 요청 환경에서 부하 테스트**
     - `nGrinder` 및 `Scouter` 모니터링 툴을 활용하여 대량 요청 시 성능 개선 효과를 검증.
     - 단일 쿼리 실행 시 체감이 크지 않았으나, 동시 요청이 늘어날수록 **인덱스 활용 효과가 명확하게 나타남**.
+
+<br>
 
 **4. 정량적 성과 (nGrinder 부하 테스트 결과)**
 
@@ -233,18 +236,14 @@
 | **Mean Test Time (평균 응답 시간)** | 41.41ms | **8.75ms** | **약 79% 단축** |
 | **Executed Tests** | 12,553 | **59,497** | **약 374% 증가** |
 
-#### [인덱스 적용 전]
-<img width="2048" height="625" alt="image" src="https://github.com/user-attachments/assets/199c6519-011c-4348-89fe-a317ceb6667b" />
+#### [ 인덱스 적용 전 ]
+  <img width="2048" height="625" alt="image" src="https://github.com/user-attachments/assets/199c6519-011c-4348-89fe-a317ceb6667b" />
 
 
-#### [인덱스 적용 후]
-<img width="2048" height="613" alt="image" src="https://github.com/user-attachments/assets/357db61b-41ac-49bc-962e-ed78ad73a4ab" />
+#### [ 인덱스 적용 후 ]
+  <img width="2048" height="613" alt="image" src="https://github.com/user-attachments/assets/357db61b-41ac-49bc-962e-ed78ad73a4ab" />
 
-
-<br>
-<br>
-
-
+<br><br>
 
 ## 시연 영상
 
@@ -252,16 +251,13 @@
 
 <br>
 
-
 ## 발표 PPT
 
 [발표 자료 다운로드/보기](https://drive.google.com/file/d/1psZjJKXSQLjjCthlXXW2jidrHAc3shOY/view)
 
 ![image](https://github.com/user-attachments/assets/7058ff89-7d1e-4267-8529-961f09bf3652)
 
-
 <br>
-
 
 ## 기술적 의사결정
 
@@ -347,7 +343,7 @@
 - 서버 콘솔에서 Hibernate 쿼리가 끊임없이 반복 실행됨
 
 ➡️ **원인**
-- React `useEffect`의 의존��� 배열(dependency array)에 `fetchAllRecords` 함수 자체가 포함됨
+- React `useEffect`의 의존��� 배열에 `fetchAllRecords` 함수 자체가 포함됨
 - 컴포넌트 렌더링 → 함수 재생성 → `useEffect` 트리거 → 상태 변경 → 재렌더링의 무한 루프 발생
 
 ➡️ **해결 방법**
